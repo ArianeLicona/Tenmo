@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface AccountDao {
 
-    List<Account> getAccounts(int id);
+    Account getAccount(int id);
 
 }

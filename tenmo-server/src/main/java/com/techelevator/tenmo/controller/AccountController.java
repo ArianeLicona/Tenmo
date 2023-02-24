@@ -22,9 +22,9 @@ public class AccountController {
         this.dao = dao;
     }
 
-    @GetMapping(path = "/userAccounts/{id}")
-    public List<Account> getAccounts(@Valid @PathVariable int id){
-        return dao.getAccounts(id);
+    @GetMapping(path = "/user/{id}")
+    public Account getAccount(@Valid @PathVariable int id){
+        return dao.getAccount(id);
     }
 
 
