@@ -4,6 +4,7 @@ import com.techelevator.tenmo.model.Transfer;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +62,18 @@ public class JdbcTransferDao implements TransferDao {
                 transfer.getAccountTo(),
                 transfer.getAmount());
     }
+
+//    @Override
+//    public Transfer updateBalance(int id, BigDecimal balance) {
+//        return null;
+//    }
+//
+//
+//    @Override
+//    public void updateAccount(int id, BigDecimal balance) {
+//        String sql = "UPDATE account SET balance WHERE account_id = ? AND transfer_status = ;";
+//        jdbcTemplate.update(sql, balance, id);
+//    }
 
     public Transfer mapRowToTransfer (SqlRowSet result){
         return new Transfer(
