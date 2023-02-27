@@ -13,6 +13,9 @@ public class Transfer {
     private BigDecimal amount;
     private String username;
 
+    public Transfer() {
+    }
+
     public Transfer(int transferId, String transferType, String transferStatus, int accountFrom, int accountTo, BigDecimal amount) {
         this.transferId = transferId;
         this.transferType = transferType;

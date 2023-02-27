@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.login.AccountNotFoundException;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -19,15 +20,15 @@ public class TransferController {
     public TransferController(JdbcTransferDao dao) {
         this.dao = dao;
     }
-    @GetMapping(path = "/{id}") //get all sent transfers by accountId
+    @GetMapping(path = "/sent/{id}") //get all sent transfers by accountId
     List<Transfer> getSentTransfers(int accountId) {
         return dao.getSentTransfers(accountId);
     }
-    @GetMapping(path = "/{id}") //get all received transfers by accountId
+    @GetMapping(path = "/received/{id}") //get all received transfers by accountId
     List<Transfer> getReceivedTransfers(int accountId) {
         return dao.getReceivedTransfers(accountId);
     }
-    @GetMapping(path = "/{id}") //get all details of transfer by transferId
+    @GetMapping(path = "/details/{id}") //get all details of transfer by transferId
     Transfer getTransferDetails (int transferId) {
         return dao.getTransferDetails(transferId);
     }
