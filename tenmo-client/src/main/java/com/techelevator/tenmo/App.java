@@ -1,16 +1,19 @@
 package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AccountService;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
+import com.techelevator.tenmo.services.TransferService;
 
 public class App {
 
     private static final String API_BASE_URL = "http://localhost:8080/";
 
     private final ConsoleService consoleService = new ConsoleService();
+    private final TransferService transferService = new TransferService();
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
 
     private AuthenticatedUser currentUser;
@@ -92,14 +95,18 @@ public class App {
         System.out.println("-------------------------------------");
 	}
 
+    //printing out transfer history
 	private void viewTransferHistory() {
 		// TODO Auto-generated method stub
-		
-	}
+        Transfer transfers = TransferService.getPastTransfers();
+        printTransfersOrError(transfers);
+    }
 
+    //printing out pending requests
 	private void viewPendingRequests() {
 		// TODO Auto-generated method stub
-		
+        Transfer transfers = TransferService.getPendingTransfers();
+        printPendingTransfersOrError(transfers);
 	}
 
 	private void sendBucks() {
@@ -111,5 +118,22 @@ public class App {
 		// TODO Auto-generated method stub
 		
 	}
+
+    private void printTransfersOrError(Transfer transfer) {
+        if (transfer != null) {
+            consoleService.printTransfers(transfer);
+        } else {
+            consoleService.printErrorMessage();
+        }
+    }
+
+    private void printPendingTransfersOrError(Transfer transfer) {
+        if (transfer != null) {
+            consoleService.printPendingTransfers(transfer);
+        } else {
+            consoleService.printErrorMessage();
+        }
+    }
+
 
 }

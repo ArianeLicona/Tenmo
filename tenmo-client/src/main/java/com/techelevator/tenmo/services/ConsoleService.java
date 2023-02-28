@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.services;
 
 
+import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.UserCredentials;
 
 import java.math.BigDecimal;
@@ -83,6 +84,32 @@ public class ConsoleService {
         System.out.println("\nPress Enter to continue...");
         scanner.nextLine();
     }
+    public void printTransfers(Transfer transfer) {
+        System.out.println("--------------------------------------------");
+        System.out.println("Transfers");
+        System.out.println("ID            From/To          Amount");
+        System.out.println("--------------------------------------------");
+        if (transfer == null) {
+            System.out.println("No past transfers to print");
+        } else {
+            System.out.println(transfer.getTransferId() + "     From:  " + transfer.getAccountFrom() + "     $ " + transfer.getAmount());
+            System.out.println(transfer.getTransferId() + "     To :  " + transfer.getAccountTo() + "     $ " + transfer.getAmount());
+        }
+        System.out.println("Please enter transfer ID to view details (0 to cancel): ");
+    }
+    public void printPendingTransfers(Transfer transfer) {
+        System.out.println("--------------------------------------------");
+        System.out.println("Pending Transfers");
+        System.out.println("ID            To          Amount");
+        System.out.println("--------------------------------------------");
+        if (transfer == null) {
+            System.out.println("No past transfers to print");
+        } else {
+            System.out.println(transfer.getTransferId() + "     " + transfer.getAccountTo() + "     $ " + transfer.getAmount());
+        }
+        System.out.println("Please enter transfer ID to view details (0 to cancel): ");
+    }
+
 
     public void printErrorMessage() {
         System.out.println("An error occurred. Check the log for details.");
