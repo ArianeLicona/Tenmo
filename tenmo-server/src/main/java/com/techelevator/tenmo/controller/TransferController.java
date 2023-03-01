@@ -20,18 +20,22 @@ public class TransferController {
     public TransferController(JdbcTransferDao dao) {
         this.dao = dao;
     }
+
     @GetMapping(path = "/sent/{id}") //get all sent transfers by accountId
     List<Transfer> getSentTransfers(int accountId) {
         return dao.getSentTransfers(accountId);
     }
+
     @GetMapping(path = "/received/{id}") //get all received transfers by accountId
     List<Transfer> getReceivedTransfers(int accountId) {
         return dao.getReceivedTransfers(accountId);
     }
+
     @GetMapping(path = "/details/{id}") //get all details of transfer by transferId
     Transfer getTransferDetails (int transferId) {
         return dao.getTransferDetails(transferId);
     }
+
     @ResponseStatus(HttpStatus.CREATED) // send a transfer
     @PostMapping(path = "/send")
     int sendTransfer(@RequestBody Transfer transfer) throws AccountNotFoundException {
@@ -41,16 +45,3 @@ public class TransferController {
          */
     }
 }
-/*
-    List<Transfer> getSentTransfers (int accountId);
-    List<Transfer> getReceivedTransfers (int accountId);
-    Transfer getTransferDetails (int transferId);
-    int sendTransfer (Transfer transfer);
-
-Transfer Controller
-Responds to GET Listing past transfers. (complete)
-Responds to GET Listing pending transfers. (complete)
-POST for a new transfer request (complete)
-Allows POST/PUT requests to update a current transfer to change state of PENDING to COMPLETED in
-the transfers table. (I'm not sure to how navigate this just yet, we may need more classes in the Dao?
-*/
