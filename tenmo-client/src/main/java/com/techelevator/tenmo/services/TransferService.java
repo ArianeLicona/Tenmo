@@ -25,7 +25,7 @@ public class TransferService {
     public static Transfer getPastTransfers(){
        Transfer transfers = null;
         try {
-            transfers = restTemplate.getForObject(API_BASE_URL, Transfer.class);
+            transfers = restTemplate.exchange(API_BASE_URL, HttpMethod.GET, makeAuthEntity(), Transfer.class).getBody();
         } catch (RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
         } catch (ResourceAccessException e) {
