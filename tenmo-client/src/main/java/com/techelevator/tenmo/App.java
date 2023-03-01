@@ -97,14 +97,12 @@ public class App {
 
     //printing out transfer history
 	private void viewTransferHistory() {
-		// TODO Auto-generated method stub
         Transfer transfers = TransferService.getPastTransfers();
         printTransfersOrError(transfers);
     }
 
     //printing out pending requests
 	private void viewPendingRequests() {
-		// TODO Auto-generated method stub
         Transfer transfers = TransferService.getPendingTransfers();
         printPendingTransfersOrError(transfers);
 	}
