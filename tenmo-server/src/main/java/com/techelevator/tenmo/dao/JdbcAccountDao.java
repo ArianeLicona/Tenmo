@@ -6,6 +6,8 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class JdbcAccountDao implements AccountDao {
@@ -26,6 +28,18 @@ public class JdbcAccountDao implements AccountDao {
             account = mapRowToAccount(result);
         }
         return account;
+    }
+// method to list all accounts.. It needs the filter, but that's done on the client side... right?
+    @Override
+    public List<Account> allAccounts() {
+        List<Account> accounts = new ArrayList<>();
+        String sql = "SELECT account_id, tenmo_user.user_id, tenmo_user.username, balance " +
+                "FROM tenmo_user JOIN account ON tenmo_user.user_id = account.user_id;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+        while (results.next()) {
+            accounts.add(mapRowToAccount(results));
+        }
+        return accounts;
     }
 
     @Override //method to add money to balance
