@@ -11,8 +11,7 @@ public interface TransferDao {
     Transfer getTransferDetails (int transferId);
     int sendTransfer (Transfer transfer);
 
-    //what Darsea is currently working on
+    //what Darsea is currently working on.. I am moving this to account
 //    int updateBalance(Transfer transfer) throws AccountNotFoundException;
-//
-//    void updateAccount(int id, BigDecimal balance);
+
 }

@@ -71,18 +71,14 @@ public class JdbcTransferDao implements TransferDao {
 
 
 
-    //what Darsea is curretly working on
+    //what Darsea is currently working on.. I am moving this to account
 //    @Override
 //    public int updateBalance(Transfer transfer) throws AccountNotFoundException {
+//        String sql = "UPDATE account SET balance WHERE account_id = ?;";
+//        SqlRowSet
 //        return sendTransfer(transfer);
 //    }
-//
-//
-//    @Override
-//    public void updateAccount(int id, BigDecimal balance) {
-//        String sql = "UPDATE account SET balance WHERE account_id = ? AND transfer_status = ;";
-//        jdbcTemplate.update(sql, balance, id);
-//    }
+
 
     public Transfer mapRowToTransfer (SqlRowSet result){
         return new Transfer(
