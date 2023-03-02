@@ -8,12 +8,14 @@ import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
 import com.techelevator.tenmo.services.TransferService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class App {
 
     private static final String API_BASE_URL = "http://localhost:8080/";
 
     private final ConsoleService consoleService = new ConsoleService();
-    private final TransferService transferService = new TransferService();
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
 
     private AuthenticatedUser currentUser;
@@ -96,16 +98,34 @@ public class App {
 	}
 
     //printing out transfer history
-	private void viewTransferHistory() {
-        Transfer transfers = TransferService.getPastTransfers();
-        printTransfersOrError(transfers);
+    private void viewTransferHistory() {
+        TransferService transferService = new TransferService(currentUser);
+        Transfer[] transfers = transferService.getPastTransfers();
+        List<Transfer> pendingTransfers = new ArrayList<>();
+        for(int i =0; i < transfers.length; i++){
+            if(transfers[i].getTransferStatus().equals("Completed")){
+                pendingTransfers.add(transfers[i]);
+            }
+        }
+        for(int i =0; i< pendingTransfers.size(); i++) {
+            printTransfersOrError(pendingTransfers.get(i));
+        }
     }
 
     //printing out pending requests
-	private void viewPendingRequests() {
-        Transfer transfers = TransferService.getPendingTransfers();
-        printPendingTransfersOrError(transfers);
-	}
+    private void viewPendingRequests() {
+        TransferService transferService = new TransferService(currentUser);
+        Transfer[] transfers = transferService.getPastTransfers();
+        List<Transfer> pendingTransfers = new ArrayList<>();
+        for(int i =0; i < transfers.length; i++){
+            if(transfers[i].getTransferStatus().equals("Pending")){
+                pendingTransfers.add(transfers[i]);
+            }
+        }
+        for(int i =0; i< pendingTransfers.size(); i++) {
+            printTransfersOrError(pendingTransfers.get(i));
+        }
+    }
 
 	private void sendBucks() {
 		// TODO Auto-generated method stub
