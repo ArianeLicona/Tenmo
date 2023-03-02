@@ -21,7 +21,7 @@ public class JdbcTransferDao implements TransferDao {
     private final String JOIN_USER = "JOIN account ON account_id.account = account_id.transfer, JOIN tenmo_user ON tenmo_user.user_id = account.user_id ";
 //    private final String INSERT_TRANSFER = "INSERT INTO transfer (transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (?, ?, ?, ?, ?, ?)";
     // Commented this one out because the one below does the trick, I believe.
-    private final String INSERT_TRANSFER = "INSERT INTO transfer (transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (?, (select trasnfer_type_id from transfer_type where transfer_type = ?), ?, ?, ?, ?)";
+    private final String INSERT_TRANSFER = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES ((select transfer_type_id from transfer_type where transfer_type_desc = ?), (select transfer_status_id from transfer_status where transfer_status_desc = ?), ?, ?, ?)";
     // subquery for inserting values into multiple tables.
     public JdbcTransferDao(JdbcTemplate jdbcTemplate) {this.jdbcTemplate = jdbcTemplate;}
 
@@ -61,9 +61,9 @@ public class JdbcTransferDao implements TransferDao {
     @Override
     public int sendTransfer (Transfer transfer){
         return jdbcTemplate.update(INSERT_TRANSFER,
-                transfer.getTransferId(),
-                transfer.getTypeId(),
-                transfer.getStatusId(),
+
+                transfer.getTransferType(),
+                transfer.getTransferStatus(),
                 transfer.getAccountFrom(),
                 transfer.getAccountTo(),
                 transfer.getAmount());
