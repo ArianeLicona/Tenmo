@@ -130,10 +130,11 @@ public class App {
             UserService userService = new UserService(currentUser);
             User[] users = userService.getAllUsers();
             for(int i = 0; i < users.length;i++){
+
                 System.out.println(users[i].getUsername());
                 System.out.println(users[i].getId());
-
             }
+            consoleService.promptForTransfer();
         }
 
 	private void requestBucks() {
