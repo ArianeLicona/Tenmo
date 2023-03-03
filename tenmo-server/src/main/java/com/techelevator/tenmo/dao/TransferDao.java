@@ -9,9 +9,10 @@ public interface TransferDao {
     List<Transfer> getSentTransfers (int accountId);
     List<Transfer> getReceivedTransfers (int accountId);
     Transfer getTransferDetails (int transferId);
+
+    void updateTransfer(Transfer transfer);
+
     int sendTransfer (Transfer transfer);
 
-    //what Darsea is currently working on.. I am moving this to account
-//    int updateBalance(Transfer transfer) throws AccountNotFoundException;
 
 }

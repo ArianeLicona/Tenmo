@@ -5,8 +5,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
-import javax.security.auth.login.AccountNotFoundException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +21,13 @@ public class JdbcTransferDao implements TransferDao {
     // Commented this one out because the one below does the trick, I believe.
     private final String INSERT_TRANSFER = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES ((select transfer_type_id from transfer_type where transfer_type_desc = ?), (select transfer_status_id from transfer_status where transfer_status_desc = ?), ?, ?, ?)";
     // subquery for inserting values into multiple tables.
+
+    public static final int PENDING_STATUS_ID = 1;
+    public static final int APPROVED_STATUS_ID = 2;
+    public static final int REJECTED_STATUS_ID = 3;
+    public static final int REQUEST_ID = 1;
+    public static final int SEND_ID = 2;
+
     public JdbcTransferDao(JdbcTemplate jdbcTemplate) {this.jdbcTemplate = jdbcTemplate;}
 
     @Override
@@ -52,33 +57,28 @@ public class JdbcTransferDao implements TransferDao {
         String sql = SELECT_DETAIL + JOIN_DETAIL + "WHERE transfer_id = ?";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, transferId);
         if (result.next()){
-            Transfer transfer = mapRowToTransferDetail(result);
-            return transfer;
+            return mapRowToTransferDetail(result);
+
         }
         return null;
     }
 
+    @Override //method to update transfer status
+    public void updateTransfer(Transfer transfer) {
+        String sql = "UPDATE transfer SET transfer_status_id = ? WHERE transfer_id = ?";
+        jdbcTemplate.update(sql, transfer.getTransferId(), transfer.getTransferStatus());
+    }
+
+
     @Override
     public int sendTransfer (Transfer transfer){
         return jdbcTemplate.update(INSERT_TRANSFER,
-
                 transfer.getTransferType(),
                 transfer.getTransferStatus(),
                 transfer.getAccountFrom(),
                 transfer.getAccountTo(),
                 transfer.getAmount());
     }
-
-
-
-    //what Darsea is currently working on.. I am moving this to account
-//    @Override
-//    public int updateBalance(Transfer transfer) throws AccountNotFoundException {
-//        String sql = "UPDATE account SET balance WHERE account_id = ?;";
-//        SqlRowSet
-//        return sendTransfer(transfer);
-//    }
-
 
     public Transfer mapRowToTransfer (SqlRowSet result){
         return new Transfer(

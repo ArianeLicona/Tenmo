@@ -1,12 +1,10 @@
 package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.Account;
-import com.techelevator.tenmo.model.Transfer;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
-import javax.security.auth.login.AccountNotFoundException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +13,6 @@ import java.util.List;
 public class JdbcAccountDao implements AccountDao {
 
     private final JdbcTemplate jdbcTemplate;
-
-
     public JdbcAccountDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -43,30 +39,13 @@ public class JdbcAccountDao implements AccountDao {
         }
         return accounts;
     }
-//I'm just not really sure these two methods are necessary, but I am also not sure
-//    @Override //method to add money to balance
-//    public BigDecimal addMoneyToBalance(int id, BigDecimal balance) {
-//        Account account = getAccount(id);
-//        BigDecimal updatedBalance = account.getBalance().add(addMoneyToBalance(id, balance));
-//        String sql = "UPDATE account SET balance = balance + ? WHERE user_id = ?;";
-//        jdbcTemplate.update(sql, balance, id);
-//        return updatedBalance;
-//    }
-//
-//    @Override //method to subtract money from balance
-//    public BigDecimal subtractMoneyFromBalance(int id, BigDecimal balance) {
-//        Account account = getAccount(id);
-//        BigDecimal updatedBalance = account.getBalance().subtract(subtractMoneyFromBalance(id, balance));
-//        String sql = "UPDATE account SET balance = balance - ? WHERE user_id = ?;";
-//        jdbcTemplate.update(sql, balance, id);
-//        return updatedBalance;
-//    }
 
     @Override
-    public int updateBalance(Account account) {
+    public void updateBalance(String username, BigDecimal amount) {
         String sql = "UPDATE account SET balance WHERE account_id = ?;";
-        return jdbcTemplate.update(sql, account.getBalance(), account.getAccountId());
+        jdbcTemplate.update(sql, username, amount);
         }
 
-    private Account mapRowToAccount(SqlRowSet rs) {return new Account(rs.getInt("account_id"), rs.getInt("user_id"), rs.getBigDecimal("balance"));}
+    private Account mapRowToAccount(SqlRowSet rs) {
+        return new Account(rs.getInt("account_id"), rs.getInt("user_id"), rs.getBigDecimal("balance"));}
 }
