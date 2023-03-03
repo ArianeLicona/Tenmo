@@ -16,7 +16,7 @@ public class JdbcTransferDao implements TransferDao {
     private final String SELECT_DETAIL = "SELECT transfer_id, transfer_type_desc, transfer_status_desc, account_from, account_to, amount ";
     private final String JOIN_DETAIL = "JOIN transfer_type ON transfer_type.transfer_type_id = transfer.transfer_type_id, JOIN transfer_status ON transfer_status.transfer_status_id = transfer.transfer_status_id ";
     private final String SELECT_USER = "SELECT transfer_id, username, amount ";
-    private final String JOIN_USER = "JOIN account ON account_id.account = account_id.transfer, JOIN tenmo_user ON tenmo_user.user_id = account.user_id ";
+    private final String JOIN_USER = "JOIN account ON account_id.account = account_id.transfer JOIN tenmo_user ON tenmo_user.user_id = account.user_id ";
 //    private final String INSERT_TRANSFER = "INSERT INTO transfer (transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (?, ?, ?, ?, ?, ?)";
     // Commented this one out because the one below does the trick, I believe.
     private final String INSERT_TRANSFER = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES ((select transfer_type_id from transfer_type where transfer_type_desc = ?), (select transfer_status_id from transfer_status where transfer_status_desc = ?), ?, ?, ?)";

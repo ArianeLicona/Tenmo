@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.services;
 
 
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
@@ -82,11 +83,11 @@ public class ConsoleService {
         }
     }
 
-    public Transfer promptForTransfer() {
+    public Transfer promptForTransfer(Account account) {
         Transfer transfer = new Transfer();
-        transfer.setTransferStatus("Approved");
         transfer.setTransferType("Send");
-        transfer.setAccountFrom(promptForInt("Please enter the user id of the sender."));
+        transfer.setTransferStatus("Approved");
+        transfer.setAccountFrom(account.getAccountId());
         transfer.setAccountTo(promptForInt("Please enter the user id of the receiver."));
         transfer.setAmount(promptForBigDecimal("Please enter the amount (XX.XX) of TEBucks to send."));
         return transfer;
@@ -127,21 +128,21 @@ public class ConsoleService {
         System.out.println("An error occurred. Check the log for details.");
     }
 
-    public void requestBucks() {
-        System.out.println("--------------------------------------------");
-        System.out.println("List of registered TEnmo users and their ID.");
-        System.out.println("--------------------------------------------");
-//        if (users == null){
-//            System.out.println("No users to print.");
-//        } else {
-//            for (User user : users) {
-//                System.out.println(user.getUsername());
-//            }
-        promptForInt("Please input the user ID of the person you'd like to request from.");
-        Transfer transfer = promptForTransfer();
-        transfer.setTypeId(1);
-        transfer.setTransferType("Request");
-        transfer.setStatusId(1);
-        transfer.setTransferStatus("Pending");
-        }
-    }
+//    public void requestBucks() {
+//        System.out.println("--------------------------------------------");
+//        System.out.println("List of registered TEnmo users and their ID.");
+//        System.out.println("--------------------------------------------");
+////        if (users == null){
+////            System.out.println("No users to print.");
+////        } else {
+////            for (User user : users) {
+////                System.out.println(user.getUsername());
+////            }
+////        promptForInt("Please input the user ID of the person you'd like to request from.");
+////        Transfer transfer = promptForTransfer(Account account);
+////        transfer.setTypeId(1);
+////        transfer.setTransferType("Request");
+////        transfer.setStatusId(1);
+////        transfer.setTransferStatus("Pending");
+////        }
+  }

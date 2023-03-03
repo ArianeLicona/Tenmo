@@ -1,5 +1,6 @@
 package com.techelevator.tenmo.services;
 
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.util.BasicLogger;
@@ -19,10 +20,10 @@ public class TransferService {
     }
 
     //method to get all past transfers.
-    public Transfer[] getTransfers(){
+    public Transfer[] getTransfers(Account account){
         Transfer[] transfers = null;
         try {
-           ResponseEntity<Transfer[]> response = restTemplate.exchange(API_BASE_URL, HttpMethod.GET, makeAuthEntity(), Transfer[].class);
+           ResponseEntity<Transfer[]> response = restTemplate.exchange(API_BASE_URL+"/sent/"+account.getAccountId(), HttpMethod.GET, makeAuthEntity(), Transfer[].class);
            transfers = response.getBody();
         } catch (RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());

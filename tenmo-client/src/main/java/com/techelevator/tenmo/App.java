@@ -2,6 +2,7 @@ package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.*;
 import com.techelevator.tenmo.services.*;
+import io.cucumber.core.gherkin.ScenarioOutline;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ public class App {
             mainMenu();
         }
     }
+
     private void loginMenu() {
         int menuSelection = -1;
         while (menuSelection != 0 && currentUser == null) {
@@ -85,24 +87,32 @@ public class App {
         }
     }
 
-	private void viewCurrentBalance() {
+    private void viewCurrentBalance() {
         AccountService accountService = new AccountService(currentUser);
         System.out.println("-------------------------------------");
-        System.out.println("Your current balance is: $"+accountService.getAccountBalance(currentUser.getUser().getId()).getBalance());
+        System.out.println("Your current balance is: $" + accountService.getAccountBalance(currentUser.getUser().getId()).getBalance());
         System.out.println("-------------------------------------");
-	}
+    }
 
     //printing out transfer history
     private void viewTransferHistory() {
         TransferService transferService = new TransferService(currentUser);
-        Transfer[] transfers = transferService.getTransfers();
+        AccountService accountService = new AccountService(currentUser);
+        Account[] accounts = accountService.getAllAccounts();
+        Account currentAccount = null;
+        for(Account account : accounts){
+            if(account.getUserId() == currentUser.getUser().getId()){
+                currentAccount = account;
+            }
+        }
+        Transfer[] transfers = transferService.getTransfers(currentAccount);
         List<Transfer> pendingTransfers = new ArrayList<>();
-        for(int i =0; i < transfers.length; i++){
-            if(transfers[i].getTransferStatus().equals("Completed")){
+        for (int i = 0; i < transfers.length; i++) {
+            if (transfers[i].getTransferStatus().equals("Completed")) {
                 pendingTransfers.add(transfers[i]);
             }
         }
-        for(int i =0; i< pendingTransfers.size(); i++) {
+        for (int i = 0; i < pendingTransfers.size(); i++) {
             printTransfersOrError(pendingTransfers.get(i));
         }
     }
@@ -110,19 +120,27 @@ public class App {
     //printing out pending requests
     private void viewPendingRequests() {
         TransferService transferService = new TransferService(currentUser);
-        Transfer[] transfers = transferService.getTransfers();
+        AccountService accountService = new AccountService(currentUser);
+        Account[] accounts = accountService.getAllAccounts();
+        Account currentAccount = null;
+        for(Account account : accounts){
+            if(account.getUserId() == currentUser.getUser().getId()){
+                currentAccount = account;
+            }
+        }
+        Transfer[] transfers = transferService.getTransfers(currentAccount);
         List<Transfer> pendingTransfers = new ArrayList<>();
-        for(int i =0; i < transfers.length; i++){
-            if(transfers[i].getTransferStatus().equals("Pending")){
+        for (int i = 0; i < transfers.length; i++) {
+            if (transfers[i].getTransferStatus().equals("Pending")) {
                 pendingTransfers.add(transfers[i]);
             }
         }
-        for(int i =0; i< pendingTransfers.size(); i++) {
+        for (int i = 0; i < pendingTransfers.size(); i++) {
             printTransfersOrError(pendingTransfers.get(i));
         }
     }
 
-	private void sendBucks() { //this currently specifies which user name you are logged in to when it prints out all usernames and ids
+    private void sendBucks() { //this currently specifies which user name you are logged in to when it prints out all usernames and ids
         // TODO Auto-generated method stub
 //        UserService userService = new UserService(currentUser);
 //        TransferService transferService = new TransferService(currentUser); //not sure if this belongs here
@@ -143,18 +161,26 @@ public class App {
         AccountService accountService = new AccountService(currentUser);
         TransferService transferService = new TransferService(currentUser);
         Account[] accounts = accountService.getAllAccounts();
-        for(int i = 0; i < accounts.length; i++ ){
+        Account currentAccount = null;
+        for (int i = 0; i < accounts.length; i++) {
             if (currentUser.getUser().getId() == (accounts[i].getUserId())) {
-                System.out.print("your username: " + currentUser.getUser().getUsername());
-                System.out.print("your user id: " + currentUser.getUser().getId());
+                currentAccount = accounts[i];
+                System.out.println("Your Username: " + currentUser.getUser().getUsername());
+                System.out.println("Your User ID: " + currentUser.getUser().getId());
+                System.out.println("Your Account ID: " + currentAccount.getAccountId());
+                System.out.println("-------------------------");
+            }
+        }
+        for (int j = 0; j < accounts.length; j++) {
+            if (accounts[j].equals(currentAccount)) {
                 continue;
             }
-                System.out.println("-------------------------");
-                System.out.println("user id: " + accounts[i].getUserId());
-                System.out.println("account id: "+accounts[i].getAccountId());
-                System.out.println("-------------------------");
-            }
-        transferService.createSendTransfer(consoleService.promptForTransfer()); //not sure if this is done correctly
+            System.out.println("-------------------------");
+            System.out.println("User Id: " + accounts[j].getUserId());
+            System.out.println("Account Id: " + accounts[j].getAccountId());
+            System.out.println("-------------------------");
+        }
+            transferService.createSendTransfer(consoleService.promptForTransfer(currentAccount));
         }
 
 	private void requestBucks() {
