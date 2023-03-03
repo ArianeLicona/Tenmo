@@ -24,7 +24,7 @@ public class TransferService {
     }
 
     //method to get all past transfers.
-    public Transfer[] getPastTransfers(){
+    public Transfer[] getTransfers(){
         Transfer[] transfers = null;
         try {
            ResponseEntity<Transfer[]> response = restTemplate.exchange(API_BASE_URL, HttpMethod.GET, makeAuthEntity(), Transfer[].class);

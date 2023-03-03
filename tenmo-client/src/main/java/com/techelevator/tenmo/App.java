@@ -100,7 +100,7 @@ public class App {
     //printing out transfer history
     private void viewTransferHistory() {
         TransferService transferService = new TransferService(currentUser);
-        Transfer[] transfers = transferService.getPastTransfers();
+        Transfer[] transfers = transferService.getTransfers();
         List<Transfer> pendingTransfers = new ArrayList<>();
         for(int i =0; i < transfers.length; i++){
             if(transfers[i].getTransferStatus().equals("Completed")){
@@ -115,7 +115,7 @@ public class App {
     //printing out pending requests
     private void viewPendingRequests() {
         TransferService transferService = new TransferService(currentUser);
-        Transfer[] transfers = transferService.getPastTransfers();
+        Transfer[] transfers = transferService.getTransfers();
         List<Transfer> pendingTransfers = new ArrayList<>();
         for(int i =0; i < transfers.length; i++){
             if(transfers[i].getTransferStatus().equals("Pending")){
