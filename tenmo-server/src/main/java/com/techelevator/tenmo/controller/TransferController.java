@@ -25,17 +25,18 @@ public class TransferController {
 
     @GetMapping(path = "/sent/{id}") //get all sent transfers by accountId
     List<Transfer> getSentTransfers(@PathVariable int id) {
+
         return dao.getSentTransfers(id);
     }
 
     @GetMapping(path = "/received/{id}") //get all received transfers by accountId
-    List<Transfer> getReceivedTransfers(int accountId) {
-        return dao.getReceivedTransfers(accountId);
+    List<Transfer> getReceivedTransfers(@PathVariable int id) {
+        return dao.getReceivedTransfers(id);
     }
 
     @GetMapping(path = "/details/{id}") //get all details of transfer by transferId
-    Transfer getTransferDetails (int transferId) {
-        return dao.getTransferDetails(transferId);
+    Transfer getTransferDetails (int id) {
+        return dao.getTransferDetails(id);
     }
 
     @ResponseStatus(HttpStatus.CREATED) // send a transfer
