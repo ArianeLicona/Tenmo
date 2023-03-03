@@ -2,9 +2,11 @@ package com.techelevator.tenmo.services;
 
 
 import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleService {
@@ -80,6 +82,14 @@ public class ConsoleService {
         }
     }
 
+    public Transfer promptForTransfer() {
+        Transfer transfer = new Transfer();
+        transfer.setAccountFrom(promptForInt("Please enter the user id of the sender."));
+        transfer.setAccountTo(promptForInt("Please enter the user id of the receiver."));
+        transfer.setAmount(promptForBigDecimal("Please enter the amount (XX.XX) of TEBucks to send."));
+        return transfer;
+    }
+
     public void pause() {
         System.out.println("\nPress Enter to continue...");
         scanner.nextLine();
@@ -115,4 +125,21 @@ public class ConsoleService {
         System.out.println("An error occurred. Check the log for details.");
     }
 
-}
+    public void requestBucks() {
+        System.out.println("--------------------------------------------");
+        System.out.println("List of registered TEnmo users and their ID.");
+        System.out.println("--------------------------------------------");
+//        if (users == null){
+//            System.out.println("No users to print.");
+//        } else {
+//            for (User user : users) {
+//                System.out.println(user.getUsername());
+//            }
+        promptForInt("Please input the user ID of the person you'd like to request from.");
+        Transfer transfer = promptForTransfer();
+        transfer.setTypeId(1);
+        transfer.setTransferType("Request");
+        transfer.setStatusId(1);
+        transfer.setTransferStatus("Pending");
+        }
+    }
