@@ -125,12 +125,15 @@ public class App {
         }
     }
 
-	private void sendBucks() {
+	private void sendBucks() { //this currently specifies which user name you are logged in to when it prints out all usernames and ids
         // TODO Auto-generated method stub
         UserService userService = new UserService(currentUser);
+        TransferService transferService = new TransferService(currentUser); //not sure if this belongs here
         User[] users = userService.getAllUsers();
         for (int i = 0; i < users.length; i++) {
             if (currentUser.getUser().equals(users[i])) {
+                System.out.println("your username: " + currentUser.getUser().getUsername());
+                System.out.println("your user id: " + currentUser.getUser().getId());
                 continue;
             }
                 System.out.println("-------------------------");
@@ -139,6 +142,7 @@ public class App {
                 System.out.println("-------------------------");
             }
             consoleService.promptForTransfer();
+            transferService.createSendTransfer(); //not sure if this is done correctly
         }
 
 	private void requestBucks() {
