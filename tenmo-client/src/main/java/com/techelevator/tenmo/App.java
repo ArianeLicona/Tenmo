@@ -126,13 +126,17 @@ public class App {
     }
 
 	private void sendBucks() {
-		// TODO Auto-generated method stub
-            UserService userService = new UserService(currentUser);
-            User[] users = userService.getAllUsers();
-            for(int i = 0; i < users.length;i++){
-
-                System.out.println(users[i].getUsername());
-                System.out.println(users[i].getId());
+        // TODO Auto-generated method stub
+        UserService userService = new UserService(currentUser);
+        User[] users = userService.getAllUsers();
+        for (int i = 0; i < users.length; i++) {
+            if (currentUser.getUser().equals(users[i])) {
+                continue;
+            }
+                System.out.println("-------------------------");
+                System.out.println("username: " + users[i].getUsername());
+                System.out.println("user id: " + users[i].getId());
+                System.out.println("-------------------------");
             }
             consoleService.promptForTransfer();
         }
