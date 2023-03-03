@@ -27,5 +27,7 @@ public class AccountController {
         return dao.getAccount(id);
     }
 
+    @GetMapping(path = "/users")
+    public List<Account> getAccounts(){return dao.allAccounts();}
 
 }

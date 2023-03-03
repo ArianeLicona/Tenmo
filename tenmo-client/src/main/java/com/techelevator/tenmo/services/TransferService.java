@@ -12,9 +12,9 @@ public class TransferService {
     private static final String API_BASE_URL = "http://localhost:8080/transfer/";
     private static final RestTemplate restTemplate = new RestTemplate();
 
-    private static AuthenticatedUser authenticatedUser;
+    private AuthenticatedUser authenticatedUser;
 
-    public TransferService(AuthenticatedUser currentUser){
+    public TransferService(AuthenticatedUser authenticatedUser){
         this.authenticatedUser = authenticatedUser;
     }
 
@@ -33,8 +33,8 @@ public class TransferService {
     }
 
     // method to post transfer object the endpoint for sending transfers... it's not working properly
-    public Transfer createSendTransfer() {
-        HttpEntity<Transfer> entity = makeTransferEntity();
+    public void createSendTransfer(Transfer transfer) {
+        HttpEntity<Transfer> entity = makeTransferEntity(transfer);
         Transfer sendingTransfer = null;
         try {
             sendingTransfer = restTemplate.postForObject(API_BASE_URL + "/send", entity, Transfer.class);
@@ -43,20 +43,20 @@ public class TransferService {
         } catch (ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
-        return sendingTransfer;
     }
 
     private HttpEntity<Void> makeAuthEntity() {
         HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(authenticatedUser.getToken());
         return new HttpEntity<>(headers);
     }
 
-    private HttpEntity<Transfer> makeTransferEntity() {
+    private HttpEntity<Transfer> makeTransferEntity(Transfer transfer) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(authenticatedUser.getToken());
-        return new HttpEntity<>(headers);
+        return new HttpEntity<>(transfer,headers);
     }
 
 

@@ -1,9 +1,6 @@
 package com.techelevator.tenmo;
 
-import com.techelevator.tenmo.model.AuthenticatedUser;
-import com.techelevator.tenmo.model.Transfer;
-import com.techelevator.tenmo.model.User;
-import com.techelevator.tenmo.model.UserCredentials;
+import com.techelevator.tenmo.model.*;
 import com.techelevator.tenmo.services.*;
 
 import java.util.ArrayList;
@@ -127,22 +124,37 @@ public class App {
 
 	private void sendBucks() { //this currently specifies which user name you are logged in to when it prints out all usernames and ids
         // TODO Auto-generated method stub
-        UserService userService = new UserService(currentUser);
-        TransferService transferService = new TransferService(currentUser); //not sure if this belongs here
-        User[] users = userService.getAllUsers();
-        for (int i = 0; i < users.length; i++) {
-            if (currentUser.getUser().equals(users[i])) {
-                System.out.println("your username: " + currentUser.getUser().getUsername());
-                System.out.println("your user id: " + currentUser.getUser().getId());
+//        UserService userService = new UserService(currentUser);
+//        TransferService transferService = new TransferService(currentUser); //not sure if this belongs here
+//        User[] users = userService.getAllUsers();
+//        for (int i = 0; i < users.length; i++) {
+//            if (currentUser.getUser().equals(users[i])) {
+//                System.out.print("your username: " + currentUser.getUser().getUsername());
+//                System.out.print("your user id: " + currentUser.getUser().getId());
+//                continue;
+//            }
+//                System.out.println("-------------------------");
+//                System.out.print("username: " + users[i].getUsername());
+//                System.out.print("user id: " + users[i].getId());
+//                System.out.println("-------------------------");
+//            }
+//
+//
+        AccountService accountService = new AccountService(currentUser);
+        TransferService transferService = new TransferService(currentUser);
+        Account[] accounts = accountService.getAllAccounts();
+        for(int i = 0; i < accounts.length; i++ ){
+            if (currentUser.getUser().getId() == (accounts[i].getUserId())) {
+                System.out.print("your username: " + currentUser.getUser().getUsername());
+                System.out.print("your user id: " + currentUser.getUser().getId());
                 continue;
             }
                 System.out.println("-------------------------");
-                System.out.println("username: " + users[i].getUsername());
-                System.out.println("user id: " + users[i].getId());
+                System.out.println("user id: " + accounts[i].getUserId());
+                System.out.println("account id: "+accounts[i].getAccountId());
                 System.out.println("-------------------------");
             }
-            consoleService.promptForTransfer();
-            transferService.createSendTransfer(); //not sure if this is done correctly
+        transferService.createSendTransfer(consoleService.promptForTransfer()); //not sure if this is done correctly
         }
 
 	private void requestBucks() {

@@ -40,8 +40,8 @@ public class TransferController {
 
     @ResponseStatus(HttpStatus.CREATED) // send a transfer
     @PostMapping(path = "/send")
-    int sendTransfer(@RequestBody Transfer transfer) throws AccountNotFoundException {
-        return dao.sendTransfer(transfer);
+    void sendTransfer(@RequestBody Transfer transfer) throws AccountNotFoundException {
+        dao.sendTransfer(transfer);
         /*need to implement a way to update accountTo and accountFrom which will need the following things
         to do so: addToBalance in Account, subtractFromBalance in Account, updateAccount?
          */

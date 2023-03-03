@@ -84,6 +84,8 @@ public class ConsoleService {
 
     public Transfer promptForTransfer() {
         Transfer transfer = new Transfer();
+        transfer.setTransferStatus("Approved");
+        transfer.setTransferType("Send");
         transfer.setAccountFrom(promptForInt("Please enter the user id of the sender."));
         transfer.setAccountTo(promptForInt("Please enter the user id of the receiver."));
         transfer.setAmount(promptForBigDecimal("Please enter the amount (XX.XX) of TEBucks to send."));
