@@ -24,7 +24,7 @@ public class TransferController {
     }
 
     @GetMapping(path = "/sent/{id}") //get all sent transfers by accountId
-    List<Transfer> getSentTransfers(@Valid @PathVariable int id) {
+    List<Transfer> getSentTransfers(@PathVariable int id) {
         return dao.getSentTransfers(id);
     }
 
