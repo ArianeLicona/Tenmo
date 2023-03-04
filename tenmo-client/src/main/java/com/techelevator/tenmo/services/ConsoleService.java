@@ -91,13 +91,18 @@ public class ConsoleService {
     }
 
 
+    //prompt for transfer constructs transfer object and ensures you are not sending to yourself.
     public Transfer promptForTransfer(Account account, String type, String status) {
         Transfer transfer = new Transfer();
         transfer.setTransferType(type);
         transfer.setTransferStatus(status);
         transfer.setAccountFrom(account.getAccountId());
-        transfer.setAccountTo(promptForInt("Please enter the account id of the receiver."));
-        transfer.setAmount(promptForBigDecimal("Please enter the amount (XX.XX) of TEBucks to send."));
+        transfer.setAccountTo(promptForInt("Please enter the Account ID of the RECEIVER: "));
+        while(transfer.getAccountTo() == transfer.getAccountFrom()){
+            System.out.println("You CAN NOT send TEBucks yo yourself");
+            transfer.setAccountTo(promptForInt("Please enter the Account ID of the RECEIVER: "));
+        }
+        transfer.setAmount(promptForBigDecimal("Please enter the amount (XX.XX) of TEBucks to send: $"));
         return transfer;
     }
 
@@ -107,6 +112,7 @@ public class ConsoleService {
 
         return transfer;
         }
+
 
     public void pause() {
         System.out.println("\nPress Enter to continue...");
