@@ -46,7 +46,7 @@ public class AccountService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(authenticatedUser.getToken());
         HttpEntity<Void> entity = new HttpEntity<Void>(headers);
-        ResponseEntity<Account> response = RESTTEMPLATE.exchange(API_URL+"users/" + id ,HttpMethod.GET ,entity, Account.class);
+        ResponseEntity<Account> response = RESTTEMPLATE.exchange(API_URL+"user/" + id ,HttpMethod.GET ,entity, Account.class);
         return response.getBody();
     }
 
