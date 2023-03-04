@@ -83,10 +83,10 @@ public class ConsoleService {
         }
     }
 
-    public Transfer promptForTransfer(Account account) {
+    public Transfer promptForTransfer(Account account, String type, String status) {
         Transfer transfer = new Transfer();
-        transfer.setTransferType("Send");
-        transfer.setTransferStatus("Approved");
+        transfer.setTransferType(type);
+        transfer.setTransferStatus(status);
         transfer.setAccountFrom(account.getAccountId());
         transfer.setAccountTo(promptForInt("Please enter the user id of the receiver."));
         transfer.setAmount(promptForBigDecimal("Please enter the amount (XX.XX) of TEBucks to send."));
@@ -121,6 +121,12 @@ public class ConsoleService {
             System.out.println(transfer.getTransferId() + "     " + transfer.getAccountTo() + "     $ " + transfer.getAmount());
         }
         System.out.println("Please enter transfer ID to view details (0 to cancel): ");
+    }
+
+    public void printUser (User user){
+        System.out.println("Username: " + user.getUsername());
+        System.out.println("User ID: " + user.getId());
+        System.out.println("-------------------------");
     }
 
 

@@ -50,7 +50,6 @@ public class UserService {
         return new HttpEntity<>(headers);
     }
 
-
     public HttpHeaders getHeaders(){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

@@ -13,7 +13,6 @@ public class App {
 
     private final ConsoleService consoleService = new ConsoleService();
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
-
     private AuthenticatedUser currentUser;
 
     public static void main(String[] args) {
@@ -180,12 +179,20 @@ public class App {
             System.out.println("Account Id: " + accounts[j].getAccountId());
             System.out.println("-------------------------");
         }
-            transferService.createSendTransfer(consoleService.promptForTransfer(currentAccount));
+            transferService.createSendTransfer(consoleService.promptForTransfer(currentAccount, "Send", "Approved"));
         }
 
 	private void requestBucks() {
-		// TODO Auto-generated method stub
-		
+        UserService userService = new UserService(currentUser);
+        AccountService accountService = new AccountService(currentUser);
+        TransferService transferService = new TransferService(currentUser);
+        User[] users = userService.getAllUsers();
+        for (User user : users){
+            consoleService.printUser(user);
+        }
+        int userId = consoleService.promptForInt("Please enter the user ID of the user you'd like to request from: ");
+        Transfer transfer = consoleService.promptForTransfer(accountService.getAccount(userId), "Request", "Pending");
+        transferService.createSendTransfer(transfer);
 	}
 
     private void printTransfersOrError(Transfer transfer) {
@@ -203,6 +210,5 @@ public class App {
             consoleService.printErrorMessage();
         }
     }
-
 
 }

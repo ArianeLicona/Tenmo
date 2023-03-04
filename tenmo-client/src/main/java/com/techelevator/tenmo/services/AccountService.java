@@ -41,6 +41,15 @@ public class AccountService {
         return account;
     }
 
+    public Account getAccount(int id){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(authenticatedUser.getToken());
+        HttpEntity<Void> entity = new HttpEntity<Void>(headers);
+        ResponseEntity<Account> response = RESTTEMPLATE.exchange(API_URL+"users/" + id ,HttpMethod.GET ,entity, Account.class);
+        return response.getBody();
+    }
+
 
 
 }
