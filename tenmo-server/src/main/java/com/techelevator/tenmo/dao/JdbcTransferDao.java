@@ -61,6 +61,11 @@ public class JdbcTransferDao implements TransferDao {
 
     @Override
     public int sendTransfer (Transfer transfer){
+        JdbcAccountDao accountDao = new JdbcAccountDao(jdbcTemplate);
+        if (transfer.getTransferStatus().equals("Approved")){
+            accountDao.addBalance(transfer.getAccountTo(), transfer.getAmount());
+            accountDao.subtractBalance(transfer.getAccountFrom(), transfer.getAmount());
+        }
         return jdbcTemplate.update(INSERT_TRANSFER,
                 transfer.getTransferType(),
                 transfer.getTransferStatus(),
