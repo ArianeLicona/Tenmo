@@ -77,6 +77,8 @@ public class App {
                 sendBucks();
             } else if (menuSelection == 5) {
                 requestBucks();
+            } else if (menuSelection == 6) {
+                loginMenu();
             } else if (menuSelection == 0) {
                 continue;
             } else {
@@ -149,7 +151,9 @@ public class App {
 
         }
         consoleService.printViewTransferDetails(transferService.viewTransfer(consoleService.promptForInt("Please enter the transfer Id: ")));
-//        consoleService.promptForMenuSelection(transferService.viewTransfer(consoleService.promptForInt("Press 1.) to approve     Press 2.) to reject ")));
+        consoleService.promptForApproveOrRejectRequest();
+        Transfer transfer = new Transfer();
+        approveOrRejectTransferRequest(transfer);
 
     }
 
@@ -214,7 +218,7 @@ public class App {
     }
 
     //
-    private void approveTransferRequest(Transfer transfer) {
+    public void approveOrRejectTransferRequest(Transfer transfer) {
         TransferService transferService = new TransferService(currentUser);
         int menuSelection = -1;
         while (menuSelection != 0) {
@@ -222,8 +226,10 @@ public class App {
             menuSelection = consoleService.promptForMenuSelection("Press 1.) to approve     Press 2.) to reject ");
             if (menuSelection == 1) {
                 transferService.approveRequest(transfer.getTransferId());
-            } else if (menuSelection == 2) {
+                sendBucks();
                 System.out.println("Transaction Approved!");
+            } else if (menuSelection == 2) {
+                transferService.rejectRequest(transfer.getTransferId());
             } else if (menuSelection == 0) {
                 continue;
             } else {

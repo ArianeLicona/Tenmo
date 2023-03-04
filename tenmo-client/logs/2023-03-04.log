@@ -1,9 +1,9 @@
-2023-03-04T07:45:00.3173923 500 : 
-2023-03-04T07:51:57.7129088 I/O error on POST request for "http://localhost:8080/login": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
-2023-03-04T07:52:07.6994553 I/O error on POST request for "http://localhost:8080/login": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
-2023-03-04T07:53:22.784536 500 : 
-2023-03-04T07:57:28.2817353 I/O error on POST request for "http://localhost:8080/login": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
-2023-03-04T07:58:28.026399 500 : 
-2023-03-04T08:00:14.598863 500 : 
-2023-03-04T08:02:25.3155261 500 : 
-2023-03-04T08:07:17.7017626 500 : 
+2023-03-04T09:21:12.0297799 I/O error on POST request for "http://localhost:8080/login": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2023-03-04T09:21:27.3638474 I/O error on POST request for "http://localhost:8080/login": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2023-03-04T09:21:36.7969551 I/O error on POST request for "http://localhost:8080/login": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2023-03-04T09:21:49.3721762 I/O error on POST request for "http://localhost:8080/register": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2023-03-04T10:02:02.0005807 I/O error on POST request for "http://localhost:8080/login": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2023-03-04T10:02:14.6867415 I/O error on POST request for "http://localhost:8080/login": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2023-03-04T10:02:25.0505878 I/O error on POST request for "http://localhost:8080/login": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2023-03-04T14:28:31.0742599 I/O error on POST request for "http://localhost:8080/login": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
+2023-03-04T14:48:52.741061 I/O error on POST request for "http://localhost:8080/login": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect

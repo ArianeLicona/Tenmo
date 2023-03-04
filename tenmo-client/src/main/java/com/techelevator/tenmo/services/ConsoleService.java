@@ -49,6 +49,7 @@ public class ConsoleService {
         System.out.println("3: View your pending requests");
         System.out.println("4: Send TE bucks");
         System.out.println("5: Request TE bucks");
+        System.out.println("6: Login to a different account");
         System.out.println("0: Exit");
         System.out.println();
     }
@@ -106,9 +107,9 @@ public class ConsoleService {
         return transfer;
     }
 
-    public Transfer promptForApproveOrRejectRequest(Account account, String status) {
+    public Transfer promptForApproveOrRejectRequest() {
        Transfer transfer = new Transfer();
-        transfer.setTransferStatus(promptForString("Press 1.) to approve   Press 2.) to reject"));
+        promptForInt("Press 1.) to approve   Press 2.) to reject: ");
 
         return transfer;
         }
@@ -141,6 +142,7 @@ public class ConsoleService {
         }
         //System.out.println("Please enter transfer ID to view details (0 to cancel): ");
         System.out.println("--------------------------------------------");
+
     }
 
     public void printUser(User user) {
@@ -164,5 +166,6 @@ public class ConsoleService {
         System.out.println("Type: " +transfer.getTransferType());
         System.out.println("Status: " +transfer.getTransferStatus());
         System.out.println("Amount: $" +transfer.getAmount());
+
     }
 }

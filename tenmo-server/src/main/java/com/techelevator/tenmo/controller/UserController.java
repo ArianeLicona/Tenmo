@@ -26,4 +26,9 @@ public class UserController {
 
     @GetMapping(path = "/user/{id}")
     User getUser(@PathVariable int id){return dao.getUserById(id);}
+
+    @GetMapping(path = "/user/username")
+    User getUserByName(@PathVariable String userName) {
+        return dao.findByUsername(userName);
+    }
 }

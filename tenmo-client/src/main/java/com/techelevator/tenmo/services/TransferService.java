@@ -119,11 +119,15 @@ public class TransferService {
         try {
             ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL + transferId + "/approved", HttpMethod.PUT, entity, Transfer.class);
             approved = response.getBody();
+            System.out.println("Transfer Approved!");
+
         } catch (RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
         } catch (ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
+
+
     }
 
     public void rejectRequest(int transferId) {
