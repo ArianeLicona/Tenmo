@@ -164,6 +164,7 @@ public class App {
         for (int i = 0; i < accounts.length; i++) {
             if (currentUser.getUser().getId() == (accounts[i].getUserId())) {
                 currentAccount = accounts[i];
+                System.out.println("-------------------------");
                 System.out.println("Your Username: " + currentUser.getUser().getUsername());
                 System.out.println("Your User ID: " + currentUser.getUser().getId());
                 System.out.println("Your Account ID: " + currentAccount.getAccountId());

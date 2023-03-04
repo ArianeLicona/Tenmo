@@ -55,7 +55,7 @@ public class JdbcAccountDao implements AccountDao {
     }
 
     public void addBalance (int accountId, BigDecimal amount){
-        String sql = "UPDATE account SET balance = (SELECT balance FROM account WHERE account_id = ?) +2 ? WHERE account_id = ?;";
+        String sql = "UPDATE account SET balance = (SELECT balance FROM account WHERE account_id = ?) + ? WHERE account_id = ?;";
         jdbcTemplate.update(sql, accountId, amount, accountId);
     }
 }

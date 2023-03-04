@@ -21,10 +21,10 @@ public class JdbcTransferDao implements TransferDao {
     public JdbcTransferDao(JdbcTemplate jdbcTemplate) {this.jdbcTemplate = jdbcTemplate;}
 
     @Override
-    public List<Transfer> getSentTransfers (int accountId){
+    public List<Transfer> getSentTransfers (int id){
         List<Transfer> transfers = new ArrayList<>();
         String sql = SELECT + JOIN + "WHERE transfer.account_from = ?";
-        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, accountId);
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, id);
         while (result.next()){
             transfers.add(mapRowToTransfer(result));
         }
