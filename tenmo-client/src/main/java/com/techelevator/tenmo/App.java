@@ -99,8 +99,8 @@ public class App {
         AccountService accountService = new AccountService(currentUser);
         Account[] accounts = accountService.getAllAccounts();
         Account currentAccount = null;
-        for(Account account : accounts){
-            if(account.getUserId() == currentUser.getUser().getId()){
+        for (Account account : accounts) {
+            if (account.getUserId() == currentUser.getUser().getId()) {
                 currentAccount = account;
             }
         }
@@ -132,8 +132,8 @@ public class App {
         System.out.println("            Pending Transfers              ");
         System.out.println("Transfer ID      From/To          Amount");
         System.out.println("--------------------------------------------");
-        for(Account account : accounts){
-            if(account.getUserId() == currentUser.getUser().getId()){
+        for (Account account : accounts) {
+            if (account.getUserId() == currentUser.getUser().getId()) {
                 currentAccount = account;
             }
         }
@@ -146,9 +146,13 @@ public class App {
         }
         for (int i = 0; i < pendingTransfers.size(); i++) {
             printTransfersOrError(pendingTransfers.get(i));
-        }
 
-        consoleService.printViewTransferDetails(transferService.viewTransfer(consoleService.promptForInt("Please enter the transfer Id: ")));    }
+        }
+        consoleService.printViewTransferDetails(transferService.viewTransfer(consoleService.promptForInt("Please enter the transfer Id: ")));
+//        consoleService.promptForMenuSelection(transferService.viewTransfer(consoleService.promptForInt("Press 1.) to approve     Press 2.) to reject ")));
+
+    }
+
 
     private void sendBucks() { //this currently specifies which user name you are logged in to when it prints out all usernames and ids
         // TODO Auto-generated method stub
@@ -174,24 +178,24 @@ public class App {
             System.out.println("-------------------------");
             System.out.println("User Id: " + accounts[j].getUserId());
             System.out.println("Account Id: " + accounts[j].getAccountId());
-            System.out.println("Username: "+ userService.getUser(accounts[j].getUserId()).getUsername());
+            System.out.println("Username: " + userService.getUser(accounts[j].getUserId()).getUsername());
             System.out.println("-------------------------");
         }
-            transferService.createSendTransfer(consoleService.promptForTransfer(currentAccount, "Send", "Approved"));
-        }
+        transferService.createSendTransfer(consoleService.promptForTransfer(currentAccount, "Send", "Approved"));
+    }
 
-	private void requestBucks() {
+    private void requestBucks() {
         UserService userService = new UserService(currentUser);
         AccountService accountService = new AccountService(currentUser);
         TransferService transferService = new TransferService(currentUser);
         User[] users = userService.getAllUsers();
-        for (User user : users){
+        for (User user : users) {
             consoleService.printUser(user);
         }
         int userId = consoleService.promptForInt("Please enter the user ID of the user you'd like to request from: ");
         Transfer transfer = consoleService.promptForTransfer(accountService.getAccount(userId), "Request", "Pending");
         transferService.createSendTransfer(transfer);
-	}
+    }
 
     private void printTransfersOrError(Transfer transfer) {
         if (transfer != null) {
@@ -209,4 +213,23 @@ public class App {
         }
     }
 
+    //
+    private void approveTransferRequest(Transfer transfer) {
+        TransferService transferService = new TransferService(currentUser);
+        int menuSelection = -1;
+        while (menuSelection != 0) {
+            consoleService.printPendingTransfers(transfer);
+            menuSelection = consoleService.promptForMenuSelection("Press 1.) to approve     Press 2.) to reject ");
+            if (menuSelection == 1) {
+                transferService.approveRequest(transfer.getTransferId());
+            } else if (menuSelection == 2) {
+                System.out.println("Transaction Approved!");
+            } else if (menuSelection == 0) {
+                continue;
+            } else {
+                System.out.println("Invalid Selection");
+            }
+            consoleService.pause();
+        }
+    }
 }

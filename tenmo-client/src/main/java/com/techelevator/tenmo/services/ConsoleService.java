@@ -101,6 +101,12 @@ public class ConsoleService {
         return transfer;
     }
 
+    public Transfer promptForApproveOrRejectRequest(Account account, String status) {
+       Transfer transfer = new Transfer();
+        transfer.setTransferStatus(promptForString("Press 1.) to approve   Press 2.) to reject"));
+
+        return transfer;
+        }
 
     public void pause() {
         System.out.println("\nPress Enter to continue...");

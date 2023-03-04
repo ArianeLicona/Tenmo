@@ -93,6 +93,15 @@ public class JdbcTransferDao implements TransferDao {
                 transfer.getAmount());
     }
 
+//    @Override
+//    public int approveTransfer (Transfer transfer) {
+//        String sql = SELECT + JOIN;
+//        JdbcAccountDao accountDao = new JdbcAccountDao(jdbcTemplate);
+//        if(transfer.getTransferStatus().equals("Pending")) {
+//            if()
+//        }
+//    }
+
     public Transfer mapRowToTransfer (SqlRowSet result){
         Transfer transfer = new Transfer(
                 result.getInt("transfer_id"),

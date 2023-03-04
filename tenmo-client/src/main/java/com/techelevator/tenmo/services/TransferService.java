@@ -97,21 +97,50 @@ public class TransferService {
 //        return transfer;
 //    }
 //
-//    public void updateTransferStatus (AuthenticatedUser authenticatedUser, Transfer transfer) {
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        headers.setBearerAuth(authenticatedUser.getToken());
-//        HttpEntity<Transfer> entity = new HttpEntity(transfer, headers);
-//        try {
-//            restTemplate.put(API_BASE_URL, HttpMethod.PUT, entity, Transfer.class);
-//        } catch (RestClientResponseException e) {
-//            BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
-//        } catch (ResourceAccessException e) {
-//            BasicLogger.log(e.getMessage());
-//        }
-//    }
+    public void updateTransferStatus (AuthenticatedUser authenticatedUser, Transfer transfer) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(authenticatedUser.getToken());
+        HttpEntity<Transfer> entity = new HttpEntity(transfer, headers);
+        try {
+            restTemplate.put(API_BASE_URL, HttpMethod.PUT, entity, Transfer.class);
+        } catch (RestClientResponseException e) {
+            BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
+        } catch (ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+    }
+    public void approveRequest(int transferId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(authenticatedUser.getToken());
+        HttpEntity<Transfer> entity = new HttpEntity(headers);
+        Transfer approved = null;
+        try {
+            ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL + transferId + "/approved", HttpMethod.PUT, entity, Transfer.class);
+            approved = response.getBody();
+        } catch (RestClientResponseException e) {
+            BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
+        } catch (ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+    }
 
-
+    public void rejectRequest(int transferId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(authenticatedUser.getToken());
+        HttpEntity<Transfer> entity = new HttpEntity(headers);
+        Transfer rejected = null;
+        try {
+            ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL + transferId + "/rejected", HttpMethod.PUT, entity, Transfer.class);
+            rejected = response.getBody();
+        } catch (RestClientResponseException e) {
+            BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
+        } catch (ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+    }
 
     private HttpEntity<Void> makeAuthEntity() {
         HttpHeaders headers = new HttpHeaders();
