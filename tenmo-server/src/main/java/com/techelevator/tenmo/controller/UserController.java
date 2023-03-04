@@ -5,6 +5,7 @@ import com.techelevator.tenmo.dao.JdbcUserDao;
 import com.techelevator.tenmo.model.User;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,4 +23,7 @@ public class UserController {
     List<User> getAllUsers () {
         return dao.findAll();
     }
+
+    @GetMapping(path = "/user/{id}")
+    User getUser(@PathVariable int id){return dao.getUserById(id);}
 }

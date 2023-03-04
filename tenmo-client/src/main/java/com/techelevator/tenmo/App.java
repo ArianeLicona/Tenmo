@@ -141,24 +141,9 @@ public class App {
 
     private void sendBucks() { //this currently specifies which user name you are logged in to when it prints out all usernames and ids
         // TODO Auto-generated method stub
-//        UserService userService = new UserService(currentUser);
-//        TransferService transferService = new TransferService(currentUser); //not sure if this belongs here
-//        User[] users = userService.getAllUsers();
-//        for (int i = 0; i < users.length; i++) {
-//            if (currentUser.getUser().equals(users[i])) {
-//                System.out.print("your username: " + currentUser.getUser().getUsername());
-//                System.out.print("your user id: " + currentUser.getUser().getId());
-//                continue;
-//            }
-//                System.out.println("-------------------------");
-//                System.out.print("username: " + users[i].getUsername());
-//                System.out.print("user id: " + users[i].getId());
-//                System.out.println("-------------------------");
-//            }
-//
-//
         AccountService accountService = new AccountService(currentUser);
         TransferService transferService = new TransferService(currentUser);
+        UserService userService = new UserService(currentUser);
         Account[] accounts = accountService.getAllAccounts();
         Account currentAccount = null;
         for (int i = 0; i < accounts.length; i++) {
@@ -178,6 +163,7 @@ public class App {
             System.out.println("-------------------------");
             System.out.println("User Id: " + accounts[j].getUserId());
             System.out.println("Account Id: " + accounts[j].getAccountId());
+            System.out.println("Username: "+ userService.getUser(accounts[j].getUserId()).getUsername());
             System.out.println("-------------------------");
         }
             transferService.createSendTransfer(consoleService.promptForTransfer(currentAccount, "Send", "Approved"));
