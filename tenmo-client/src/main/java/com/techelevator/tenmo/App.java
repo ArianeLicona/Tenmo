@@ -105,15 +105,21 @@ public class App {
             }
         }
         Transfer[] transfers = transferService.getTransfers(currentAccount);
-        List<Transfer> pendingTransfers = new ArrayList<>();
+        List<Transfer> approvedTransfers = new ArrayList<>();
+        System.out.println("--------------------------------------------");
+        System.out.println("            Completed Transfers            ");
+        System.out.println("Transfer ID      From/To          Amount");
+        System.out.println("--------------------------------------------");
         for (int i = 0; i < transfers.length; i++) {
-            if (transfers[i].getTransferStatus().equals("Completed")) {
-                pendingTransfers.add(transfers[i]);
+            if (transfers[i].getTransferStatus().equals("Approved")) {
+                approvedTransfers.add(transfers[i]);
             }
         }
-        for (int i = 0; i < pendingTransfers.size(); i++) {
-            printTransfersOrError(pendingTransfers.get(i));
+        for (int i = 0; i < approvedTransfers.size(); i++) {
+            printTransfersOrError(approvedTransfers.get(i));
         }
+
+        consoleService.printViewTransferDetails(transferService.viewTransfer(consoleService.promptForInt("Please enter the transfer Id: ")));
     }
 
     //printing out pending requests
@@ -122,6 +128,10 @@ public class App {
         AccountService accountService = new AccountService(currentUser);
         Account[] accounts = accountService.getAllAccounts();
         Account currentAccount = null;
+        System.out.println("--------------------------------------------");
+        System.out.println("            Pending Transfers              ");
+        System.out.println("Transfer ID      From/To          Amount");
+        System.out.println("--------------------------------------------");
         for(Account account : accounts){
             if(account.getUserId() == currentUser.getUser().getId()){
                 currentAccount = account;
@@ -137,7 +147,8 @@ public class App {
         for (int i = 0; i < pendingTransfers.size(); i++) {
             printTransfersOrError(pendingTransfers.get(i));
         }
-    }
+
+        consoleService.printViewTransferDetails(transferService.viewTransfer(consoleService.promptForInt("Please enter the transfer Id: ")));    }
 
     private void sendBucks() { //this currently specifies which user name you are logged in to when it prints out all usernames and ids
         // TODO Auto-generated method stub

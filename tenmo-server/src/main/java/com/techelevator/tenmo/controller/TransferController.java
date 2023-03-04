@@ -35,7 +35,7 @@ public class TransferController {
     }
 
     @GetMapping(path = "/details/{id}") //get all details of transfer by transferId
-    Transfer getTransferDetails (int id) {
+    Transfer getTransferDetails (@PathVariable int id) {
         return dao.getTransferDetails(id);
     }
 

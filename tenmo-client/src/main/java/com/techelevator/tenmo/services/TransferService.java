@@ -46,6 +46,27 @@ public class TransferService {
         }
     }
 
+
+    public Transfer viewTransfer(int id){
+        Transfer transfer = null;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(authenticatedUser.getToken());
+        HttpEntity<Void> entity = new HttpEntity<Void>(headers);
+        try {
+            ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL+"/details/"+id, HttpMethod.GET, makeAuthEntity(), Transfer.class);
+            transfer = response.getBody();
+        } catch (RestClientResponseException e) {
+            BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
+        } catch (ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+
+        return transfer;
+
+    }
+
+
     private HttpEntity<Void> makeAuthEntity() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

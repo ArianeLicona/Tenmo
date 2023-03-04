@@ -25,11 +25,13 @@ public class ConsoleService {
         return menuSelection;
     }
 
+
     public void printGreeting() {
         System.out.println("*********************");
         System.out.println("* Welcome to TEnmo! *");
         System.out.println("*********************");
     }
+
 
     public void printLoginMenu() {
         System.out.println();
@@ -38,6 +40,7 @@ public class ConsoleService {
         System.out.println("0: Exit");
         System.out.println();
     }
+
 
     public void printMainMenu() {
         System.out.println();
@@ -50,16 +53,19 @@ public class ConsoleService {
         System.out.println();
     }
 
+
     public UserCredentials promptForCredentials() {
         String username = promptForString("Username: ");
         String password = promptForString("Password: ");
         return new UserCredentials(username, password);
     }
 
+
     public String promptForString(String prompt) {
         System.out.print(prompt);
         return scanner.nextLine();
     }
+
 
     public int promptForInt(String prompt) {
         System.out.print(prompt);
@@ -72,6 +78,7 @@ public class ConsoleService {
         }
     }
 
+
     public BigDecimal promptForBigDecimal(String prompt) {
         System.out.print(prompt);
         while (true) {
@@ -83,6 +90,7 @@ public class ConsoleService {
         }
     }
 
+
     public Transfer promptForTransfer(Account account, String type, String status) {
         Transfer transfer = new Transfer();
         transfer.setTransferType(type);
@@ -93,37 +101,37 @@ public class ConsoleService {
         return transfer;
     }
 
+
     public void pause() {
         System.out.println("\nPress Enter to continue...");
         scanner.nextLine();
     }
+
+
     public void printTransfers(Transfer transfer) {
-        System.out.println("--------------------------------------------");
-        System.out.println("Transfers");
-        System.out.println("ID            From/To          Amount");
-        System.out.println("--------------------------------------------");
         if (transfer == null) {
             System.out.println("No past transfers to print");
         } else {
-            System.out.println(transfer.getTransferId() + "     From:  " + transfer.getAccountFrom() + "     $ " + transfer.getAmount());
-            System.out.println(transfer.getTransferId() + "     To :  " + transfer.getAccountTo() + "     $ " + transfer.getAmount());
+            System.out.println(transfer.getTransferId() + "           From: " + transfer.getAccountFrom() + "         $-" + transfer.getAmount());
+            System.out.println(transfer.getTransferId() + "             To: " + transfer.getAccountTo() + "         $+" + transfer.getAmount());
         }
-        System.out.println("Please enter transfer ID to view details (0 to cancel): ");
-    }
-    public void printPendingTransfers(Transfer transfer) {
+        //System.out.println("Please enter transfer ID to view details (0 to cancel): ");
         System.out.println("--------------------------------------------");
-        System.out.println("Pending Transfers");
-        System.out.println("ID            To          Amount");
-        System.out.println("--------------------------------------------");
-        if (transfer == null) {
-            System.out.println("No past transfers to print");
-        } else {
-            System.out.println(transfer.getTransferId() + "     " + transfer.getAccountTo() + "     $ " + transfer.getAmount());
-        }
-        System.out.println("Please enter transfer ID to view details (0 to cancel): ");
     }
 
-    public void printUser (User user){
+
+    public void printPendingTransfers(Transfer transfer) {
+        if (transfer == null) {
+            System.out.println("No past transfers to print");
+        } else {
+            System.out.println(transfer.getTransferId() + "           From: " + transfer.getAccountFrom() + "         $-" + transfer.getAmount());
+            System.out.println(transfer.getTransferId() + "             To: " + transfer.getAccountTo() + "         $+" + transfer.getAmount());
+        }
+        //System.out.println("Please enter transfer ID to view details (0 to cancel): ");
+        System.out.println("--------------------------------------------");
+    }
+
+    public void printUser(User user) {
         System.out.println("Username: " + user.getUsername());
         System.out.println("User ID: " + user.getId());
         System.out.println("-------------------------");
@@ -134,21 +142,15 @@ public class ConsoleService {
         System.out.println("An error occurred. Check the log for details.");
     }
 
-//    public void requestBucks() {
-//        System.out.println("--------------------------------------------");
-//        System.out.println("List of registered TEnmo users and their ID.");
-//        System.out.println("--------------------------------------------");
-////        if (users == null){
-////            System.out.println("No users to print.");
-////        } else {
-////            for (User user : users) {
-////                System.out.println(user.getUsername());
-////            }
-////        promptForInt("Please input the user ID of the person you'd like to request from.");
-////        Transfer transfer = promptForTransfer(Account account);
-////        transfer.setTypeId(1);
-////        transfer.setTransferType("Request");
-////        transfer.setStatusId(1);
-////        transfer.setTransferStatus("Pending");
-////        }
-  }
+    public void printViewTransferDetails(Transfer transfer){
+        System.out.println("--------------------------------------------");
+        System.out.println("           Transfer Details                   ");
+        System.out.println("--------------------------------------------");
+        System.out.println("Id: " + transfer.getTransferId());
+        System.out.println("From: " + transfer.getAccountFrom());
+        System.out.println("To: " +transfer.getAccountTo());
+        System.out.println("Type: " +transfer.getTransferType());
+        System.out.println("Status: " +transfer.getTransferStatus());
+        System.out.println("Amount: $" +transfer.getAmount());
+    }
+}
