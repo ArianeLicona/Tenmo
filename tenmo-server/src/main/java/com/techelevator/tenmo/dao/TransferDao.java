@@ -12,6 +12,10 @@ public interface TransferDao {
 
     void updateTransfer(Transfer transfer);
 
+//    Transfer getTransferStatusDesc(String transferStatus);
+//
+//    Transfer getTransferTypeDesc(String transferType);
+
     int sendTransfer (Transfer transfer);
 
 

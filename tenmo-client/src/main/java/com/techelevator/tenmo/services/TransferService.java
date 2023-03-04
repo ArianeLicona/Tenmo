@@ -66,6 +66,52 @@ public class TransferService {
 
     }
 
+    // lists pending transfer by userId
+//    public Transfer[] getPendingTransfers(AuthenticatedUser authenticatedUser) {
+//        Transfer[] pendingTransfers = null;
+//        try {
+//            pendingTransfers = restTemplate.exchange(API_BASE_URL + "/tenmo_user" +
+//                    authenticatedUser.getUser().getId() + "/pending", HttpMethod.GET,
+//                    makeAuthEntity(), Transfer[].class).getBody();
+//        } catch (RestClientResponseException e) {
+//            BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
+//        } catch (ResourceAccessException e) {
+//            BasicLogger.log(e.getMessage());
+//        }
+//
+//        return pendingTransfers;
+//    }
+//
+//    public Transfer getTransferStatusByDesc(AuthenticatedUser authenticatedUser, String transferStatusDesc) {
+//        Transfer transfer = null;
+//        try {
+//            ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL + "/transfer_status/filter?desc=" +
+//                    transferStatusDesc, HttpMethod.GET, makeTransfeStatusEntity(transfer), Transfer.class);
+//            transfer = response.getBody();
+//        } catch (RestClientResponseException e) {
+//            BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
+//        } catch (ResourceAccessException e) {
+//            BasicLogger.log(e.getMessage());
+//        }
+//
+//        return transfer;
+//    }
+//
+//    public void updateTransferStatus (AuthenticatedUser authenticatedUser, Transfer transfer) {
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//        headers.setBearerAuth(authenticatedUser.getToken());
+//        HttpEntity<Transfer> entity = new HttpEntity(transfer, headers);
+//        try {
+//            restTemplate.put(API_BASE_URL, HttpMethod.PUT, entity, Transfer.class);
+//        } catch (RestClientResponseException e) {
+//            BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
+//        } catch (ResourceAccessException e) {
+//            BasicLogger.log(e.getMessage());
+//        }
+//    }
+
+
 
     private HttpEntity<Void> makeAuthEntity() {
         HttpHeaders headers = new HttpHeaders();
@@ -75,6 +121,13 @@ public class TransferService {
     }
 
     private HttpEntity<Transfer> makeTransferEntity(Transfer transfer) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(authenticatedUser.getToken());
+        return new HttpEntity<>(transfer,headers);
+    }
+
+    private HttpEntity<Transfer> makeTransfeStatusEntity(Transfer transfer) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(authenticatedUser.getToken());

@@ -47,4 +47,11 @@ public class TransferController {
         to do so: addToBalance in Account, subtractFromBalance in Account, updateAccount?
          */
     }
+
+//    @GetMapping(path = "/transfer_status/filter")
+//    Transfer getTransferStatusDesc(@PathVariable String tranferStatusDesc) {
+//        return dao.getTransferStatusDesc(tranferStatusDesc);
+//    }
+
+
 }
