@@ -19,7 +19,7 @@ public class TransferService {
         this.authenticatedUser = authenticatedUser;
     }
 
-    //method to get all past transfers.
+    //method to GET all transfers from the server's endpoint http://localhost:8080/transfer/sent/{accountID}
     public Transfer[] getTransfers(Account account){
         Transfer[] transfers = null;
         try {
@@ -33,7 +33,8 @@ public class TransferService {
         return transfers;
     }
 
-    // method to post transfer object the endpoint for sending transfers... it's not working properly
+
+    //method to POST a transfer to the server's endpoint http://localhost:8080/transfer/send
     public void createSendTransfer(Transfer transfer) {
         HttpEntity<Transfer> entity = makeTransferEntity(transfer);
         Transfer sendingTransfer = null;
@@ -47,12 +48,13 @@ public class TransferService {
     }
 
 
+    //method to GET a transfer object from the server's endpoint http://localhost:8080/transfer/details/{id}
     public Transfer viewTransfer(int id){
         Transfer transfer = null;
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(authenticatedUser.getToken());
-        HttpEntity<Void> entity = new HttpEntity<Void>(headers);
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
         try {
             ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL+"/details/"+id, HttpMethod.GET, makeAuthEntity(), Transfer.class);
             transfer = response.getBody();
@@ -66,57 +68,15 @@ public class TransferService {
 
     }
 
-    // lists pending transfer by userId
-//    public Transfer[] getPendingTransfers(AuthenticatedUser authenticatedUser) {
-//        Transfer[] pendingTransfers = null;
-//        try {
-//            pendingTransfers = restTemplate.exchange(API_BASE_URL + "/tenmo_user" +
-//                    authenticatedUser.getUser().getId() + "/pending", HttpMethod.GET,
-//                    makeAuthEntity(), Transfer[].class).getBody();
-//        } catch (RestClientResponseException e) {
-//            BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
-//        } catch (ResourceAccessException e) {
-//            BasicLogger.log(e.getMessage());
-//        }
-//
-//        return pendingTransfers;
-//    }
-//
-//    public Transfer getTransferStatusByDesc(AuthenticatedUser authenticatedUser, String transferStatusDesc) {
-//        Transfer transfer = null;
-//        try {
-//            ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL + "/transfer_status/filter?desc=" +
-//                    transferStatusDesc, HttpMethod.GET, makeTransfeStatusEntity(transfer), Transfer.class);
-//            transfer = response.getBody();
-//        } catch (RestClientResponseException e) {
-//            BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
-//        } catch (ResourceAccessException e) {
-//            BasicLogger.log(e.getMessage());
-//        }
-//
-//        return transfer;
-//    }
-//
-    public void updateTransferStatus (AuthenticatedUser authenticatedUser, Transfer transfer) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(authenticatedUser.getToken());
-        HttpEntity<Transfer> entity = new HttpEntity(transfer, headers);
-        try {
-            restTemplate.put(API_BASE_URL, HttpMethod.PUT, entity, Transfer.class);
-        } catch (RestClientResponseException e) {
-            BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
-        } catch (ResourceAccessException e) {
-            BasicLogger.log(e.getMessage());
-        }
-    }
+
+    //method to PUT an updated transfer to the server's endpoint http://localhost:8080/transfer/update
     public void updateRequest(Transfer transfer) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(authenticatedUser.getToken());
-        HttpEntity<Transfer> entity = new HttpEntity(headers);
+        HttpEntity<Transfer> entity = new HttpEntity<>(transfer,headers);
         try {
-            restTemplate.put(API_BASE_URL + "/update", transfer);
+            restTemplate.put(API_BASE_URL + "/update", entity);
 
         } catch (RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
@@ -127,21 +87,7 @@ public class TransferService {
 
     }
 
-//    public void rejectRequest(int transferId) {
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        headers.setBearerAuth(authenticatedUser.getToken());
-//        HttpEntity<Transfer> entity = new HttpEntity(headers);
-//        Transfer rejected = null;
-//        try {
-//            ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL + transferId + "/rejected", HttpMethod.PUT, entity, Transfer.class);
-//            rejected = response.getBody();
-//        } catch (RestClientResponseException e) {
-//            BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
-//        } catch (ResourceAccessException e) {
-//            BasicLogger.log(e.getMessage());
-//        }
-
+    //makes the httpEntity with authenticated token
     private HttpEntity<Void> makeAuthEntity() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -149,14 +95,8 @@ public class TransferService {
         return new HttpEntity<>(headers);
     }
 
+    //makes the httpEntity with an authenticated token plus a transfer object
     private HttpEntity<Transfer> makeTransferEntity(Transfer transfer) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(authenticatedUser.getToken());
-        return new HttpEntity<>(transfer,headers);
-    }
-
-    private HttpEntity<Transfer> makeTransfeStatusEntity(Transfer transfer) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(authenticatedUser.getToken());

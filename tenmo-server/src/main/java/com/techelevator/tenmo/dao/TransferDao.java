@@ -7,14 +7,12 @@ import java.util.List;
 
 public interface TransferDao {
     List<Transfer> getSentTransfers (int accountId);
+
     List<Transfer> getReceivedTransfers (int accountId);
+
     Transfer getTransferDetails (int transferId);
 
     void updateTransfer(Transfer transfer);
-
-//    Transfer getTransferStatusDesc(String transferStatus);
-//
-//    Transfer getTransferTypeDesc(String transferType);
 
     int sendTransfer (Transfer transfer);
 

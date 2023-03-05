@@ -16,10 +16,13 @@ public class JdbcTransferDao implements TransferDao {
     private final String SELECT = "SELECT transfer.transfer_id, transfer_type.transfer_type_desc, transfer_status.transfer_status_desc, transfer.account_from, transfer.account_to, transfer.amount, tenmo_user.username FROM transfer ";
     private final String JOIN = "JOIN account ON account.account_id = transfer.account_from JOIN tenmo_user ON tenmo_user.user_id = account.user_id JOIN transfer_status ON transfer_status.transfer_status_id = transfer.transfer_status_id JOIN transfer_type ON transfer_type.transfer_type_id = transfer.transfer_type_id ";
     private final String INSERT_TRANSFER = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES ((select transfer_type_id from transfer_type where transfer_type_desc = ?), (select transfer_status_id from transfer_status where transfer_status_desc = ?), ?, ?, ?)";
-    // subquery for inserting values into multiple tables.
+
 
     public JdbcTransferDao(JdbcTemplate jdbcTemplate) {this.jdbcTemplate = jdbcTemplate;}
 
+
+
+    //method to get sent transfers
     @Override
     public List<Transfer> getSentTransfers (int id){
         List<Transfer> transfers = new ArrayList<>();
@@ -31,6 +34,9 @@ public class JdbcTransferDao implements TransferDao {
         return transfers;
     }
 
+
+
+    //method to get received transfers
     @Override
     public List<Transfer> getReceivedTransfers (int accountId){
         List<Transfer> transfers = new ArrayList<>();
@@ -42,6 +48,8 @@ public class JdbcTransferDao implements TransferDao {
         return transfers;
     }
 
+
+    //method to get transfer details
     @Override
     public Transfer getTransferDetails (int transferId){
         String sql = SELECT + JOIN + "WHERE transfer_id = ?";
@@ -52,36 +60,25 @@ public class JdbcTransferDao implements TransferDao {
         return null;
     }
 
-    @Override //method to update transfer status
+
+
+    //method to update transfer status
+    @Override
     public void updateTransfer(Transfer transfer) {
-        String sql = "UPDATE transfer SET transfer_status_id = ? WHERE transfer_id = ?";
-        jdbcTemplate.update(sql, transfer.getTransferId(), transfer.getTransferStatus());
+        JdbcAccountDao accountDao = new JdbcAccountDao(jdbcTemplate);
+        String sql = "UPDATE transfer SET transfer_status_id = 2 WHERE transfer_id = ?";
+        jdbcTemplate.update(sql, transfer.getTransferId());
+        accountDao.addBalance(transfer.getAccountTo(), transfer.getAmount());
+        accountDao.subtractBalance(transfer.getAccountFrom(), transfer.getAmount());
     }
 
-//    @Override
-//    public Transfer getTransferStatusDesc(String transferStatusDesc) {
-//        String sql = "SELECT transfer_status_desc, transfer_status_id FROM transfer_status WHERE transfer_status_desc = ?;";
-//        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transferStatusDesc);
-//        if (results.next()) {
-//            return mapRowToTransfer(results);
-//        }
-//        return null;
-//    }
-//
-//    @Override
-//    public Transfer getTransferTypeDesc(String transferType){
-//        String sql = "SELECT transfer_type_desc, transfer_type_id FROM transfer_status WHERE transfer_status_desc = ?;";
-//        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transferType);
-//        if (results.next()) {
-//            return mapRowToTransfer(results);
-//        }
-//        return null;
-//    }
 
+    //method to send a transfer
     @Override
     public int sendTransfer (Transfer transfer){
         JdbcAccountDao accountDao = new JdbcAccountDao(jdbcTemplate);
         if (transfer.getTransferStatus().equals("Approved")){
+
             accountDao.addBalance(transfer.getAccountTo(), transfer.getAmount());
             accountDao.subtractBalance(transfer.getAccountFrom(), transfer.getAmount());
         }
@@ -93,15 +90,9 @@ public class JdbcTransferDao implements TransferDao {
                 transfer.getAmount());
     }
 
-//    @Override
-//    public int approveTransfer (Transfer transfer) {
-//        String sql = SELECT + JOIN;
-//        JdbcAccountDao accountDao = new JdbcAccountDao(jdbcTemplate);
-//        if(transfer.getTransferStatus().equals("Pending")) {
-//            if()
-//        }
-//    }
 
+
+    //method to map elements to construct transfer object
     public Transfer mapRowToTransfer (SqlRowSet result){
         Transfer transfer = new Transfer(
                 result.getInt("transfer_id"),

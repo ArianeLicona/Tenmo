@@ -2,7 +2,6 @@ package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.*;
 import com.techelevator.tenmo.services.*;
-import io.cucumber.core.gherkin.ScenarioOutline;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +87,7 @@ public class App {
         }
     }
 
+    //method gets the user balance by using the accountService method getAccountBalance(int id) passes it to the println statement
     private void viewCurrentBalance() {
         AccountService accountService = new AccountService(currentUser);
         System.out.println("-------------------------------------");
@@ -95,7 +95,7 @@ public class App {
         System.out.println("-------------------------------------");
     }
 
-    //printing out transfer history
+    //method to view a list of Approved Transfers and allows you to view the details of the transfer
     private void viewTransferHistory() {
         TransferService transferService = new TransferService(currentUser);
         AccountService accountService = new AccountService(currentUser);
@@ -120,8 +120,14 @@ public class App {
         for (int i = 0; i < approvedTransfers.size(); i++) {
             printTransfersOrError(approvedTransfers.get(i));
         }
+        int choice = consoleService.promptForProceedOrMainMenu();
+        if(choice == 1) {
+            consoleService.printViewTransferDetails(transferService.viewTransfer(consoleService.promptForInt("Please enter the transfer Id: ")));
+        }else{
+            mainMenu();
+        }
 
-        consoleService.printViewTransferDetails(transferService.viewTransfer(consoleService.promptForInt("Please enter the transfer Id: ")));
+
     }
 
     //printing out pending requests
@@ -142,17 +148,22 @@ public class App {
         Transfer[] transfers = transferService.getTransfers(currentAccount);
         List<Transfer> pendingTransfers = new ArrayList<>();
         for (int i = 0; i < transfers.length; i++) {
-            if (transfers[i].getTransferStatus().equals("Pending")) {
+            if (transfers[i].getTransferStatus().equals("Pending") && transfers[i].getAccountTo() != currentAccount.getAccountId()) {
                 pendingTransfers.add(transfers[i]);
             }
         }
-        for (int i = 0; i < pendingTransfers.size(); i++) {
-            printTransfersOrError(pendingTransfers.get(i));
-
+        Transfer transfer = null;
+        if(pendingTransfers.size() != 0) {
+            for (int i = 0; i < pendingTransfers.size(); i++) {
+                printTransfersOrError(pendingTransfers.get(i));
+            }
+            System.out.println("Please Approve or Reject Transfer");
+            transfer = transferService.viewTransfer(consoleService.promptForInt("Please enter the transfer Id: "));
+        } else {
+            System.out.println("There are no pending transfers");
+            mainMenu();
         }
-        System.out.println("Please Approve or Reject Transfer");
-        Transfer transfer = transferService.viewTransfer(consoleService.promptForInt("Please enter the transfer Id: "));
-        int choice = consoleService.promptForProccedOrMainMenu();
+        int choice = consoleService.promptForProceedOrMainMenu();
         if(choice == 1) {
             approveOrRejectTransferRequest(transfer);
         }else{
@@ -161,7 +172,9 @@ public class App {
     }
 
 
-    private void sendBucks() { //this currently specifies which user name you are logged in to when it prints out all usernames and ids
+
+    //method prints out accounts to send to and displays who you can send to
+    private void sendBucks() {
         // TODO Auto-generated method stub
         AccountService accountService = new AccountService(currentUser);
         TransferService transferService = new TransferService(currentUser);
@@ -191,6 +204,9 @@ public class App {
         transferService.createSendTransfer(consoleService.promptForTransfer(currentAccount, "Send", "Approved"));
     }
 
+
+
+    //method allows you to request Bucks from another user
     private void requestBucks() {
         UserService userService = new UserService(currentUser);
         AccountService accountService = new AccountService(currentUser);
@@ -212,25 +228,17 @@ public class App {
         }
     }
 
-    private void printPendingTransfersOrError(Transfer transfer) {
-        if (transfer != null) {
-            consoleService.printPendingTransfers(transfer);
-        } else {
-            consoleService.printErrorMessage();
-        }
-    }
-
-    //
+    //method to approve or deny request
     public void approveOrRejectTransferRequest(Transfer transfer) {
         TransferService transferService = new TransferService(currentUser);
-        consoleService.printPendingTransfers(transfer);
-        int menuSelection = consoleService.promptForMenuSelection("Press 1.) to approve     Press 2.) to reject ");
+        consoleService.printTransfers(transfer);
+        int menuSelection = consoleService.promptForMenuSelection("Press [1]- to approve     Press [2]- to reject ");
         if (menuSelection == 1) {
-            transfer.setTransferType("Approved");
+            transfer.setTransferStatus("Approved");
             transferService.updateRequest(transfer);
             System.out.println("Transaction Approved!");
         } else if (menuSelection == 2) {
-            transfer.setTransferStatus("Transaction Rejected!");
+            transfer.setTransferStatus("Rejected");
             transferService.updateRequest(transfer);
         }
     }

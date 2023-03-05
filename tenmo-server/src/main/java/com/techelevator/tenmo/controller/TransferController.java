@@ -23,39 +23,43 @@ public class TransferController {
         this.dao = dao;
     }
 
-    @GetMapping(path = "/sent/{id}") //get all sent transfers by accountId
+
+    //get all sent transfers by accountId
+    @GetMapping(path = "/sent/{id}")
     List<Transfer> getSentTransfers(@PathVariable int id) {
         return dao.getSentTransfers(id);
     }
 
-    @GetMapping(path = "/received/{id}") //get all received transfers by accountId
+
+    //get all received transfers by accountId
+    @GetMapping(path = "/received/{id}")
     List<Transfer> getReceivedTransfers(@PathVariable int id) {
         return dao.getReceivedTransfers(id);
     }
 
-    @GetMapping(path = "/details/{id}") //get all details of transfer by transferId
+
+    //get all details of transfer by transferId
+    @GetMapping(path = "/details/{id}")
     Transfer getTransferDetails (@PathVariable int id) {
         return dao.getTransferDetails(id);
     }
 
-    @ResponseStatus(HttpStatus.CREATED) // send a transfer
+
+    // send a transfer
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/send")
     void sendTransfer(@RequestBody Transfer transfer) throws AccountNotFoundException {
         dao.sendTransfer(transfer);
-        /*need to implement a way to update accountTo and accountFrom which will need the following things
-        to do so: addToBalance in Account, subtractFromBalance in Account, updateAccount?
-         */
     }
+
+    //updates the transfer
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PutMapping(path = "/update")
     void updateTransfer(@RequestBody Transfer transfer){
-        dao.sendTransfer(transfer);
+        dao.updateTransfer(transfer);
     }
 
-//    @GetMapping(path = "/transfer_status/filter")
-//    Transfer getTransferStatusDesc(@PathVariable String tranferStatusDesc) {
-//        return dao.getTransferStatusDesc(tranferStatusDesc);
-//    }
+
 
 
 }

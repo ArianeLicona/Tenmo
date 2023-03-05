@@ -19,3 +19,4 @@
 2023-03-04T21:01:24.5526947 401 : 
 2023-03-04T21:17:22.9964899 401 : 
 2023-03-04T21:25:53.5760844 401 : 
+2023-03-04T21:31:00.2664921 I/O error on POST request for "http://localhost:8080/login": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect

@@ -17,6 +17,8 @@ public class JdbcAccountDao implements AccountDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+
+    //method to get an account
     @Override
     public Account getAccount(int id) {
         Account account = null;
@@ -27,7 +29,9 @@ public class JdbcAccountDao implements AccountDao {
         }
         return account;
     }
-// method to list all accounts.. It needs the filter, but that's done on the client side... right?
+
+
+    //method to get a list of all accounts
     @Override
     public List<Account> allAccounts() {
         List<Account> accounts = new ArrayList<>();
@@ -40,20 +44,29 @@ public class JdbcAccountDao implements AccountDao {
         return accounts;
     }
 
+
+    //method to update a transfer
     @Override
     public void updateBalance(String username, BigDecimal amount) {
         String sql = "UPDATE account SET balance WHERE account_id = ?;";
         jdbcTemplate.update(sql, username, amount);
-        }
+    }
 
+
+    //method to map result to construct account object
     private Account mapRowToAccount(SqlRowSet rs) {
         return new Account(rs.getInt("account_id"), rs.getInt("user_id"), rs.getBigDecimal("balance"));}
 
+
+
+    //method to subtract money from an account
     public void subtractBalance (int accountId, BigDecimal amount){
         String sql = "UPDATE account SET balance = (SELECT balance FROM account WHERE account_id = ?) - ? WHERE account_id = ?;";
         jdbcTemplate.update(sql, accountId, amount, accountId);
     }
 
+
+    //method to add money to an account
     public void addBalance (int accountId, BigDecimal amount){
         String sql = "UPDATE account SET balance = (SELECT balance FROM account WHERE account_id = ?) + ? WHERE account_id = ?;";
         jdbcTemplate.update(sql, accountId, amount, accountId);

@@ -11,7 +11,6 @@ public interface AccountDao {
 
     Account getAccount(int id);
 
-    // method to list all accounts
     List<Account> allAccounts();
 
     void updateBalance(String username, BigDecimal amount);

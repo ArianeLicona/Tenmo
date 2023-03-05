@@ -22,14 +22,9 @@ public class UserService {
 
     public UserService (AuthenticatedUser authenticatedUser) {this.authenticatedUser = authenticatedUser;}
 
-//    public List<User> getAllUsers(){
-//        HttpHeaders headers = getHeaders();
-//        HttpEntity<Void> entity = new HttpEntity<Void>(headers);
-//        ResponseEntity<User> response = RESTTEMPLATE.getForEntity(API_URL, entity, User.class);
-//        return ;
-//    }
 
-    public User[] getAllUsers(){ //method to list all users
+    //method to GET all users from the server's endpoint http://localhost:8080/users
+    public User[] getAllUsers(){
         User[] users = null;
         try {
             ResponseEntity<User[]> response = RESTTEMPLATE.exchange(API_URL, HttpMethod.GET, makeAuthEntity(), User[].class);
@@ -42,7 +37,8 @@ public class UserService {
         return users;
     }
 
-    public User getUser(int id){ //method to list all users
+    //method to GET a user by feeding in a UserID to the server's endpoint http://localhost:8080/users/user/{id}
+    public User getUser(int id){
         User user = null;
         try {
             ResponseEntity<User> response = RESTTEMPLATE.exchange(API_URL+"/user/"+id, HttpMethod.GET, makeAuthEntity(), User.class);
@@ -55,7 +51,7 @@ public class UserService {
         return user;
     }
 
-
+    //method creates the httpEntity with authentication token
     private HttpEntity<Void> makeAuthEntity() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -63,10 +59,5 @@ public class UserService {
         return new HttpEntity<>(headers);
     }
 
-    public HttpHeaders getHeaders(){
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(authenticatedUser.getToken());
-        return headers;
-    }
+
 }

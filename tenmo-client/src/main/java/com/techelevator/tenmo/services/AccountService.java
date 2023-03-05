@@ -19,6 +19,10 @@ public class AccountService {
         this.authenticatedUser = authenticatedUser;
     }
 
+
+
+
+    //gets account balance by feeding in a USERID
     public Account getAccountBalance(int id){
         Account account = null;
         HttpHeaders headers = new HttpHeaders();
@@ -30,6 +34,9 @@ public class AccountService {
         return account;
     }
 
+
+
+    //gets all accounts
     public Account[] getAllAccounts(){
         Account[] account = {};
         HttpHeaders headers = new HttpHeaders();
@@ -41,6 +48,8 @@ public class AccountService {
         return account;
     }
 
+
+    //gets a single account by feeding in a USERID
     public Account getAccount(int id){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

@@ -7,7 +7,6 @@ import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleService {
@@ -107,8 +106,9 @@ public class ConsoleService {
         return transfer;
     }
 
-    public int promptForProccedOrMainMenu() {
-        return promptForInt("Press [1] - To Proceed  |  Press [2] - Return to Main: ");
+    //on the view pending transactions prompts user to proceed or ext before accepting or rejecting transaction.
+    public int promptForProceedOrMainMenu() {
+        return promptForInt("Press [1] - To Proceed to next  |  Press [2] - Return to Main: ");
     }
 
 
@@ -121,6 +121,7 @@ public class ConsoleService {
     }
 
 
+    //prints a tranfer object by passing in a transfer object.
     public void printTransfers(Transfer transfer) {
         if (transfer == null) {
             System.out.println("No past transfers to print");
@@ -128,23 +129,11 @@ public class ConsoleService {
             System.out.println(transfer.getTransferId() + "           From: " + transfer.getAccountFrom() + "         $-" + transfer.getAmount());
             System.out.println(transfer.getTransferId() + "             To: " + transfer.getAccountTo() + "         $+" + transfer.getAmount());
         }
-        //System.out.println("Please enter transfer ID to view details (0 to cancel): ");
         System.out.println("--------------------------------------------");
     }
 
 
-    public void printPendingTransfers(Transfer transfer) {
-        if (transfer == null) {
-            System.out.println("No past transfers to print");
-        } else {
-            System.out.println(transfer.getTransferId() + "           From: " + transfer.getAccountFrom() + "         $-" + transfer.getAmount());
-            System.out.println(transfer.getTransferId() + "             To: " + transfer.getAccountTo() + "         $+" + transfer.getAmount());
-        }
-        //System.out.println("Please enter transfer ID to view details (0 to cancel): ");
-        System.out.println("--------------------------------------------");
-
-    }
-
+    //prints user by passing in a user object
     public void printUser(User user) {
         System.out.println("Username: " + user.getUsername());
         System.out.println("User ID: " + user.getId());
@@ -156,6 +145,10 @@ public class ConsoleService {
         System.out.println("An error occurred. Check the log for details.");
     }
 
+
+
+
+    //prints a transfer's details by passing in a transfer
     public void printViewTransferDetails(Transfer transfer){
         System.out.println("--------------------------------------------");
         System.out.println("           Transfer Details                   ");
