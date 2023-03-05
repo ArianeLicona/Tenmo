@@ -25,7 +25,6 @@ public class TransferController {
 
     @GetMapping(path = "/sent/{id}") //get all sent transfers by accountId
     List<Transfer> getSentTransfers(@PathVariable int id) {
-
         return dao.getSentTransfers(id);
     }
 
@@ -46,6 +45,11 @@ public class TransferController {
         /*need to implement a way to update accountTo and accountFrom which will need the following things
         to do so: addToBalance in Account, subtractFromBalance in Account, updateAccount?
          */
+    }
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PutMapping(path = "/update")
+    void updateTransfer(@RequestBody Transfer transfer){
+        dao.sendTransfer(transfer);
     }
 
 //    @GetMapping(path = "/transfer_status/filter")

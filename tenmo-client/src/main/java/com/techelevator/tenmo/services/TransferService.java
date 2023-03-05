@@ -110,16 +110,13 @@ public class TransferService {
             BasicLogger.log(e.getMessage());
         }
     }
-    public void approveRequest(int transferId) {
+    public void updateRequest(Transfer transfer) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(authenticatedUser.getToken());
         HttpEntity<Transfer> entity = new HttpEntity(headers);
-        Transfer approved = null;
         try {
-            ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL + transferId + "/approved", HttpMethod.PUT, entity, Transfer.class);
-            approved = response.getBody();
-            System.out.println("Transfer Approved!");
+            restTemplate.put(API_BASE_URL + "/update", transfer);
 
         } catch (RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
@@ -130,21 +127,20 @@ public class TransferService {
 
     }
 
-    public void rejectRequest(int transferId) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(authenticatedUser.getToken());
-        HttpEntity<Transfer> entity = new HttpEntity(headers);
-        Transfer rejected = null;
-        try {
-            ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL + transferId + "/rejected", HttpMethod.PUT, entity, Transfer.class);
-            rejected = response.getBody();
-        } catch (RestClientResponseException e) {
-            BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
-        } catch (ResourceAccessException e) {
-            BasicLogger.log(e.getMessage());
-        }
-    }
+//    public void rejectRequest(int transferId) {
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//        headers.setBearerAuth(authenticatedUser.getToken());
+//        HttpEntity<Transfer> entity = new HttpEntity(headers);
+//        Transfer rejected = null;
+//        try {
+//            ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL + transferId + "/rejected", HttpMethod.PUT, entity, Transfer.class);
+//            rejected = response.getBody();
+//        } catch (RestClientResponseException e) {
+//            BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
+//        } catch (ResourceAccessException e) {
+//            BasicLogger.log(e.getMessage());
+//        }
 
     private HttpEntity<Void> makeAuthEntity() {
         HttpHeaders headers = new HttpHeaders();

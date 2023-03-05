@@ -150,11 +150,14 @@ public class App {
             printTransfersOrError(pendingTransfers.get(i));
 
         }
-        consoleService.printViewTransferDetails(transferService.viewTransfer(consoleService.promptForInt("Please enter the transfer Id: ")));
-        consoleService.promptForApproveOrRejectRequest();
-        Transfer transfer = new Transfer();
-        approveOrRejectTransferRequest(transfer);
-
+        System.out.println("Please Approve or Reject Transfer");
+        Transfer transfer = transferService.viewTransfer(consoleService.promptForInt("Please enter the transfer Id: "));
+        int choice = consoleService.promptForProccedOrMainMenu();
+        if(choice == 1) {
+            approveOrRejectTransferRequest(transfer);
+        }else{
+            mainMenu();
+        }
     }
 
 
@@ -220,22 +223,15 @@ public class App {
     //
     public void approveOrRejectTransferRequest(Transfer transfer) {
         TransferService transferService = new TransferService(currentUser);
-        int menuSelection = -1;
-        while (menuSelection != 0) {
-            consoleService.printPendingTransfers(transfer);
-            menuSelection = consoleService.promptForMenuSelection("Press 1.) to approve     Press 2.) to reject ");
-            if (menuSelection == 1) {
-                transferService.approveRequest(transfer.getTransferId());
-                sendBucks();
-                System.out.println("Transaction Approved!");
-            } else if (menuSelection == 2) {
-                transferService.rejectRequest(transfer.getTransferId());
-            } else if (menuSelection == 0) {
-                continue;
-            } else {
-                System.out.println("Invalid Selection");
-            }
-            consoleService.pause();
+        consoleService.printPendingTransfers(transfer);
+        int menuSelection = consoleService.promptForMenuSelection("Press 1.) to approve     Press 2.) to reject ");
+        if (menuSelection == 1) {
+            transfer.setTransferType("Approved");
+            transferService.updateRequest(transfer);
+            System.out.println("Transaction Approved!");
+        } else if (menuSelection == 2) {
+            transfer.setTransferStatus("Transaction Rejected!");
+            transferService.updateRequest(transfer);
         }
     }
 }

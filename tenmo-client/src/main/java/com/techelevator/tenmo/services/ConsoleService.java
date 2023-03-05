@@ -107,12 +107,12 @@ public class ConsoleService {
         return transfer;
     }
 
-    public Transfer promptForApproveOrRejectRequest() {
-       Transfer transfer = new Transfer();
-        promptForInt("Press 1.) to approve   Press 2.) to reject: ");
+    public int promptForProccedOrMainMenu() {
+        return promptForInt("Press [1] - To Proceed  |  Press [2] - Return to Main: ");
+    }
 
-        return transfer;
-        }
+
+
 
 
     public void pause() {
