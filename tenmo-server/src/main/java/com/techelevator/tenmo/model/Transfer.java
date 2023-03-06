@@ -23,6 +23,13 @@ public class Transfer {
         this.amount = amount;
         this.username = username;
     }
+
+    public Transfer(int i, String send, String approved, int i1, int i2, BigDecimal bigDecimal) {
+    }
+
+    public Transfer(Object o) {
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }

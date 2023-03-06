@@ -1,6 +1,8 @@
 package com.techelevator.tenmo.dao;
 
+import com.techelevator.tenmo.exceptions.EmptyRowSetException;
 import com.techelevator.tenmo.model.Transfer;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -24,12 +26,19 @@ public class JdbcTransferDao implements TransferDao {
 
     //method to get sent transfers
     @Override
-    public List<Transfer> getSentTransfers (int id){
+    public List<Transfer> getSentTransfers (int transferId){
         List<Transfer> transfers = new ArrayList<>();
+        if (transferId <= 2999){
+            throw new IllegalArgumentException();
+        }
         String sql = SELECT + JOIN + "WHERE transfer.account_from = ?";
-        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, id);
-        while (result.next()){
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, transferId);
+        if (result != null){
+        while (result.next()) {
             transfers.add(mapRowToTransfer(result));
+            }
+        } else {
+            throw new EmptyRowSetException();
         }
         return transfers;
     }
@@ -51,43 +60,64 @@ public class JdbcTransferDao implements TransferDao {
 
     //method to get transfer details
     @Override
-    public Transfer getTransferDetails (int transferId){
+    public Transfer getTransferDetails (int transferId) {
+        if (transferId <= 2999) {
+            throw new IllegalArgumentException();
+        }
+        Transfer transfer = null;
         String sql = SELECT + JOIN + "WHERE transfer_id = ?";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, transferId);
-        if (result.next()){
-            return mapRowToTransfer(result);
+        if (result != null) {
+            while (result.next()) {
+                transfer = mapRowToTransfer(result);
+            }
+        } else {
+            throw new EmptyRowSetException();
         }
-        return null;
-    }
-
+            return transfer;
+        }
 
 
     //method to update transfer status
     @Override
     public void updateTransfer(Transfer transfer) {
         JdbcAccountDao accountDao = new JdbcAccountDao(jdbcTemplate);
+        if (transfer.getTransferStatus() == null ) {
+            throw new IllegalArgumentException();
+        }
         String sql = "UPDATE transfer SET transfer_status_id = 2 WHERE transfer_id = ?";
         jdbcTemplate.update(sql, transfer.getTransferId());
         accountDao.addBalance(transfer.getAccountTo(), transfer.getAmount());
         accountDao.subtractBalance(transfer.getAccountFrom(), transfer.getAmount());
+        try {
+            jdbcTemplate.update(sql, transfer);
+        } catch (EmptyResultDataAccessException e){
+            e.getMessage();
+        }
     }
 
 
     //method to send a transfer
     @Override
-    public int sendTransfer (Transfer transfer){
+    public int sendTransfer (Transfer transfer) {
         JdbcAccountDao accountDao = new JdbcAccountDao(jdbcTemplate);
-        if (transfer.getTransferStatus().equals("Approved")){
+        int createTransfer = 0;
+        try {
+            if (transfer.getTransferStatus().equals("Approved")) {
 
-            accountDao.addBalance(transfer.getAccountTo(), transfer.getAmount());
-            accountDao.subtractBalance(transfer.getAccountFrom(), transfer.getAmount());
+                accountDao.addBalance(transfer.getAccountTo(), transfer.getAmount());
+                accountDao.subtractBalance(transfer.getAccountFrom(), transfer.getAmount());
+            }
+            createTransfer = jdbcTemplate.update(INSERT_TRANSFER,
+                    transfer.getTransferType(),
+                    transfer.getTransferStatus(),
+                    transfer.getAccountFrom(),
+                    transfer.getAccountTo(),
+                    transfer.getAmount());
+        } catch (NullPointerException e) {
+            System.out.println("Must not be null");
         }
-        return jdbcTemplate.update(INSERT_TRANSFER,
-                transfer.getTransferType(),
-                transfer.getTransferStatus(),
-                transfer.getAccountFrom(),
-                transfer.getAccountTo(),
-                transfer.getAmount());
+        return createTransfer;
     }
 
 
