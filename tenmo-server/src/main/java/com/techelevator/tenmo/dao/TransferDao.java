@@ -6,6 +6,8 @@ import javax.security.auth.login.AccountNotFoundException;
 import java.util.List;
 
 public interface TransferDao {
+    List<Transfer> getAllTransfers();
+
     List<Transfer> getSentTransfers (int accountId);
 
     List<Transfer> getReceivedTransfers (int accountId);

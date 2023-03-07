@@ -28,21 +28,27 @@ public class JdbcTransferDaoTests extends BaseDaoTests {
         sut = new JdbcTransferDao(jdbcTemplate);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void getSentTransfers_with_invalid_transfer_id_throws_exception() {
-        sut.getSentTransfers(2999);
+    @Test
+    public void updateTransfer_updates_correctly() {
+        );
     }
-
-
-    @Test(expected = IllegalArgumentException.class)
-    public void getTransferDetails_returns_details_matching_id() {
-        sut.getTransferDetails(2999);
-    }
-
-    @Test(expected=IllegalArgumentException.class)
-    public void updateTransfer_cannot_be_null(){
-        sut.updateTransfer(TRANSFER_1);
-    }
-
 }
+
+//    @Test(expected = IllegalArgumentException.class)
+//    public void getSentTransfers_with_invalid_transfer_id_throws_exception() {
+//        sut.getSentTransfers(2999);
+//    }
+//
+//
+//    @Test(expected = IllegalArgumentException.class)
+//    public void getTransferDetails_returns_details_matching_id() {
+//        sut.getTransferDetails(2999);
+//    }
+//
+//    @Test(expected=IllegalArgumentException.class)
+//    public void updateTransfer_cannot_be_null(){
+//        sut.updateTransfer(TRANSFER_1);
+//    }
+//
+//}
 

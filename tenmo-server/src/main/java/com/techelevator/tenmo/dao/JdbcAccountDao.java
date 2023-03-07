@@ -36,7 +36,7 @@ public class JdbcAccountDao implements AccountDao {
                 account = mapRowToAccount(result);
             }
         } else {
-            throw new EmptyRowSetException();
+
         }
         return account;
     }
