@@ -4,6 +4,7 @@ import com.techelevator.tenmo.dao.JdbcUserDao;
 import com.techelevator.tenmo.dao.TransferDao;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.User;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,10 +28,44 @@ public class JdbcTransferDaoTests extends BaseDaoTests {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         sut = new JdbcTransferDao(jdbcTemplate);
     }
+//
+//    @Test
+//    public void updateTransfer_updates_correctly() {
+
+//    }
 
     @Test
-    public void updateTransfer_updates_correctly() {
-        );
+    public void getTransferDetails_returns_transfer() {
+        Transfer actualTransfer = sut.getTransferDetails(TRANSFER_1.getTransferId());
+
+        Assert.assertEquals(TRANSFER_1, actualTransfer);
+    }
+
+//    @Test
+//    public void sendTransfer_creates_a_transfer() {
+//        Transfer newTransfer = new Transfer(-1,"Send", "Approved", 2003, 2001, new BigDecimal("15.00"));
+//
+//        boolean transferWasCreated = sut.sendTransfer(newTransfer.getTransferType(),newTransfer.getAmount());
+//
+//        Assert.assertTrue(transferWasCreated);
+//
+//        Transfer actualTransfer = sut.getTransferDetails();
+//        newUser.setId(actualUser.getId());
+//
+//        actualUser.setPassword(newUser.getPassword()); // reset password back to unhashed password for testing
+//        Assert.assertEquals(newUser, actualUser);
+//    }
+
+
+    @Test
+    public void getAllTransfers_returns_all_users() {
+        List<Transfer> transfers = sut.getAllTransfers();
+
+        Assert.assertNotNull(transfers);
+        Assert.assertEquals(3, transfers.size());
+        Assert.assertEquals(TRANSFER_1, transfers.get(0));
+        Assert.assertEquals(TRANSFER_2, transfers.get(1));
+        Assert.assertEquals(TRANSFER_3, transfers.get(2));
     }
 }
 
