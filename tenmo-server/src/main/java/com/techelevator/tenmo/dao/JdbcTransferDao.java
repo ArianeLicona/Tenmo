@@ -1,5 +1,6 @@
 package com.techelevator.tenmo.dao;
 
+import com.techelevator.tenmo.exceptions.EmptyRowSetException;
 import com.techelevator.tenmo.model.Transfer;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -25,9 +26,13 @@ public class JdbcTransferDao implements TransferDao {
         List<Transfer> transfers = new ArrayList<>();
         String sql = SELECT + JOIN;
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql);
-        while (result.next()) {
-            transfers.add(mapRowToTransfer(result));
-        }
+//        if (result != null) {
+            while (result.next()) {
+                transfers.add(mapRowToTransfer(result));
+            }
+//        } else {
+//            throw new EmptyRowSetException();
+//        }
         return transfers;
     }
 
