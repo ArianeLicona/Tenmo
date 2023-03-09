@@ -106,7 +106,7 @@ public class App {
                 currentAccount = account;
             }
         }
-        Transfer[] transfers = transferService.getTransfers(currentAccount);
+        Transfer[] transfers = transferService.getTransferById(currentAccount);
         List<Transfer> approvedTransfers = new ArrayList<>();
         System.out.println("--------------------------------------------");
         System.out.println("            Completed Transfers            ");
@@ -145,7 +145,7 @@ public class App {
                 currentAccount = account;
             }
         }
-        Transfer[] transfers = transferService.getTransfers(currentAccount);
+        Transfer[] transfers = transferService.getTransferById(currentAccount);
         List<Transfer> pendingTransfers = new ArrayList<>();
         for (int i = 0; i < transfers.length; i++) {
             if (transfers[i].getTransferStatus().equals("Pending") && transfers[i].getAccountTo() != currentAccount.getAccountId()) {

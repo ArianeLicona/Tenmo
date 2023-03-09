@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.exceptions.EmptyRowSetException;
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -21,18 +22,22 @@ public class JdbcTransferDao implements TransferDao {
 
     public JdbcTransferDao(JdbcTemplate jdbcTemplate) {this.jdbcTemplate = jdbcTemplate;}
 
+
     @Override
-    public List<Transfer> getAllTransfers() {
+    public List<Transfer> getTransferById(Account account) {
         List<Transfer> transfers = new ArrayList<>();
+        if (account.getAccountId() <= 1999) {
+            throw new IllegalArgumentException();
+        }
         String sql = SELECT + JOIN;
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql);
-//        if (result != null) {
+        if (result != null) {
             while (result.next()) {
                 transfers.add(mapRowToTransfer(result));
             }
-//        } else {
-//            throw new EmptyRowSetException();
-//        }
+        } else {
+            throw new EmptyRowSetException();
+        }
         return transfers;
     }
 
@@ -96,9 +101,9 @@ public class JdbcTransferDao implements TransferDao {
     public void updateTransfer(Transfer transfer) {
         JdbcAccountDao accountDao = new JdbcAccountDao(jdbcTemplate);
 
-//        if (transfer.getTransferStatus() == null ) {
-//            throw new IllegalArgumentException();
-//        }
+        if (transfer.getTransferStatus() == null ) {
+            throw new IllegalArgumentException();
+        }
         String sql = "UPDATE transfer SET transfer_status_id = ? WHERE transfer_id = ?";
         jdbcTemplate.update(sql, transfer.getTransferId());
         accountDao.addBalance(transfer.getAccountTo(), transfer.getAmount());

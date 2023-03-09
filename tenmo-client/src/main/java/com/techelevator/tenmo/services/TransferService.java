@@ -20,7 +20,7 @@ public class TransferService {
     }
 
     //method to GET all transfers from the server's endpoint http://localhost:8080/transfer/sent/{accountID}
-    public Transfer[] getTransfers(Account account){
+    public Transfer[] getTransferById(Account account){
         Transfer[] transfers = null;
         try {
            ResponseEntity<Transfer[]> response = restTemplate.exchange(API_BASE_URL+"/sent/"+account.getAccountId(), HttpMethod.GET, makeAuthEntity(), Transfer[].class);
